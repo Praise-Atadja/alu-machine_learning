@@ -9,10 +9,15 @@ can be interpreted as numpy.ndarray
 
 
 def np_cat(mat1, mat2, axis=0):
-    """
-    function to concatenate two matrices along an axis
-    np_cat concatenates two matrices along a specified axis using NumPy,
-    providing flexibility in array combination without loops or conditionals.
+    """Concatenate two matrices along the specified axis using NumPy.
+
+    Args:
+        mat1 (numpy.ndarray): The first matrix to concatenate.
+        mat2 (numpy.ndarray): The second matrix to concatenate.
+        axis (int, optional): The axis along which to concatenate (default is 0).
+
+    Returns:
+        numpy.ndarray: The concatenated matrix.
     """
     concatenated_matrix = np.concatenate((mat1, mat2), axis=axis)
     return concatenated_matrix
