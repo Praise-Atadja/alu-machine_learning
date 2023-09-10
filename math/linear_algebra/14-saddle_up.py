@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"np_matmul performs matrix multiplication using NumPy, ensuring input matrices mat1 and mat2 are non-empty ndarrays. No loops or conditionals."
+"""
+np_matmul performs matrix multiplication using NumPy, 
+ensuring input matrices mat1 and mat2 are non-empty ndarrays. 
+No loops or conditionals.
+"""
 import numpy as np
 
 
