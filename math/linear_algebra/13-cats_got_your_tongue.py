@@ -7,9 +7,12 @@ assume mat1 and mat2 are never empty and
 can be interpreted as numpy.ndarray
 """
 
+
 def np_cat(mat1, mat2, axis=0):
     """
     function to concatenate two matrices along an axis
+    np_cat concatenates two matrices along a specified axis using NumPy,
+    providing flexibility in array combination without loops or conditionals.
     """
     concatenated_matrix = np.concatenate((mat1, mat2), axis=axis)
     return concatenated_matrix
