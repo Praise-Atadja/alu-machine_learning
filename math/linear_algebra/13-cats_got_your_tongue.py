@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 import numpy as np
 """
-This module contains the function:
-concatenates two matrices along an axis
-assume mat1 and mat2 are never empty and
-can be interpreted as numpy.ndarray
+This module contains a function that concatenates 
+two matrices along a specified axis. 
+It assumes that both mat1 and mat2 are 
+non-empty and can be interpreted as NumPy arrays.
 """
 
 
