@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """
-This module contains the function:
-performs matrix multiplication,
-assume mat1 and mat2 are never empty and
-can be interpreted as numpy.ndarray
+This module contains a function for performing 
+matrix multiplication. It assumes that both mat1 
+and mat2 are non-empty and can be treated as NumPy arrays.
 """
 import numpy as np
 
