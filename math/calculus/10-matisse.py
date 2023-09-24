@@ -11,8 +11,8 @@ def poly_derivative(poly):
         # Multiply each coefficient by its corresponding power of x
         derivative.append(poly[i] * i)
 
-    # If the derivative is all zeros, return [0]
+    # If the derivative is all zeros, return None
     if all(coeff == 0 for coeff in derivative):
-        return [0]
+        return None
 
     return derivative
