@@ -5,9 +5,11 @@ def summation_i_squared(n):
     if not isinstance(n, int) or n < 1:
         return None
     
-    # Base case: If n is 1, return 1^2
-    if n == 1:
-        return 1
+    # Initialize the sum
+    total = 0
     
-    # Recursive case: Calculate the sum of squares up to n
-    return n**2 + summation_i_squared(n-1)
+    # Iterate from 1 to n and add the square of each number to the total
+    for i in range(1, n + 1):
+        total += i**2
+    
+    return total
