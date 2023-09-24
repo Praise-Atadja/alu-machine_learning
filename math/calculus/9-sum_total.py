@@ -1,6 +1,16 @@
 #!/usr/bin/env python3
 
-"""Module for calculating the sum of squares of integers."""
+"""
+    Calculate the sum of squares of integers from 1 to n.
+
+    Args:
+        n (int): The stopping condition for the sum.
+
+    Returns:
+        int or None: The integer value of the sum of squares from 1 to n. 
+                     Returns None if n is not a valid number.
+"""
+
 
 def summation_i_squared(n):
     # Check if n is a valid number
