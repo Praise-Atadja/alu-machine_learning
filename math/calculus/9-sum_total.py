@@ -13,15 +13,18 @@
 
 
 def summation_i_squared(n):
-    
+
     # Calculate the sum of squares using the formula
     # This formula efficiently computes the sum of squares of integers
+    # without using loops or recursion.
     if not isinstance(n, int) or n < 1:
         # Check if n is a valid number
         # If n is not a valid input, return None
         return None
-
+    
+    # Calculate the sum of squares using the formula:
+    # Sum = n * (n + 1) * (2n + 1) / 6
     result = (n * (n + 1) * (2 * n + 1)) // 6
-    # without using loops or recursion.
+    
     # Return the result, which is the sum of squares
     return result
