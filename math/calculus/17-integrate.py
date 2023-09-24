@@ -25,10 +25,8 @@ def poly_integral(poly, C=0):
     while result and result[-1] == 0:
         result.pop()
     
+    # Add 0 as the constant term if the result is empty
+    if not result:
+        result.append(0)
+    
     return result
-
-# Example usage:
-poly = [5, 3, 0, 1]
-C = 0
-integral_result = poly_integral(poly, C)
-print(integral_result)  # Output: [0, 5.0, 1.5, 0.0, 0.25]
