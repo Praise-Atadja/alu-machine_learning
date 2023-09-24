@@ -1,30 +1,19 @@
 #!/usr/bin/env python3
-
 """
-    summation_i_squared calculate the sum of squares of integers from 1 to n.
-
-    Args:
-        n (int): The stopping condition for the sum.
-
-    Returns:
-        int or None: The integer value of the sum of squares from 1 to n.
-        Returns None if n is not a valid number.
+Summation of squared values
 """
 
 
 def summation_i_squared(n):
+    """ Sum i squared
 
-    # Calculate the sum of squares using the formula
-    # This formula efficiently computes the sum of squares of integers
-    # without using loops or recursion.
-    if not isinstance(n, int) or n < 1:
-        # Check if n is a valid number
-        # If n is not a valid input, return None
+    Args:
+        n (_type_): _description_
+    """
+    if n == 1:
+        return 1
+    if n < 1:
         return None
-    
-    # Calculate the sum of squares using the formula:
-    # Sum = n * (n + 1) * (2n + 1) / 6
-    result = (n * (n + 1) * (2 * n + 1)) // 6
-    
-    # Return the result, which is the sum of squares
-    return result
+    else:
+        result = (n*(n+1)*(2*n+1))//6
+        return result
