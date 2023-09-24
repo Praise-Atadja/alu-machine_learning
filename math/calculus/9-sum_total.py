@@ -5,11 +5,7 @@ def summation_i_squared(n):
     if not isinstance(n, int) or n < 1:
         return None
     
-    # Initialize the sum
-    total = 0
+    # Calculate the sum of squares using the formula
+    result = (n * (n + 1) * (2 * n + 1)) // 6
     
-    # Iterate from 1 to n and add the square of each number to the total
-    for i in range(1, n + 1):
-        total += i**2
-    
-    return total
+    return result
