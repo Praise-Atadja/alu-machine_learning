@@ -11,12 +11,10 @@ def poly_integral(poly, C=0):
     
     # Calculate the integral of the polynomial
     integral = [C]  # Initialize the result list with the integration constant C
+    
     for i, coeff in enumerate(poly):
-        if isinstance(coeff, int):
-            # If the coefficient is an integer, perform integer division
-            integral.append(coeff // (i + 1))
-        else:
-            # If the coefficient is a float, perform regular division
-            integral.append(coeff / (i + 1))
+        # Calculate the integral for each coefficient
+        integral_coeff = coeff / (i + 1)
+        integral.append(integral_coeff)
     
     return integral
