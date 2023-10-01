@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
+ 
+"""
+   This module creates a Poisson distribution class.
 
+"""
 
 class Poisson:
     """
