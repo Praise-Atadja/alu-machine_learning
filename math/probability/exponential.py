@@ -10,6 +10,7 @@ class Exponential:
     Exponential distribution class.
     """
 
+
     def __init__(self, data=None, lambtha=1.):
         if data is None:
             if lambtha <= 0:
@@ -34,5 +35,20 @@ class Exponential:
         """
         if x < 0:
             return 0
-        pdf_value = self.lambtha * 2.7182818285 ** (-self.lambtha * x)
+        pdf_value = self.lambtha * 2.71828 ** (-self.lambtha * x)
         return pdf_value
+
+    def cdf(self, x):
+        """
+        Calculates the value of the CDF for a given time period.
+
+        Args:
+            x (float): The time period.
+
+        Returns:
+            float: The CDF value for x.
+        """
+        if x < 0:
+            return 0
+        cdf_value = 1 - 2.71828 ** (-self.lambtha * x)
+        return cdf_value
