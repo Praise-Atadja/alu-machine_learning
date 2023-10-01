@@ -2,6 +2,9 @@
 
 
 class Poisson:
+    """
+    Creates aPoisson distribution class.
+    """
     def __init__(self, data=None, lambtha=1.):
         """"
           Creates a class Poisson that represents a poisson distribution
