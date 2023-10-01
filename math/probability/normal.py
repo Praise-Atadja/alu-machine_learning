@@ -20,7 +20,7 @@ class Normal:
             if not isinstance(data, list):
                 raise TypeError("data must be a list")
             if len(data) < 2:
-                raise ValueError("must contain multiple values")
+                raise ValueError("data must contain values")
             self.mean = sum(data) / len(data)
-            variance = sum((x - self.mean) ** 2 for x in data) / len(data)  # Updated variance calculation
+            variance = sum((x - self.mean) ** 2 for x in data) / len(data) 
             self.stddev = variance ** 0.5
