@@ -35,7 +35,7 @@ class Exponential:
         """
         if x < 0:
             return 0
-        pdf_value = self.lambtha * 2.71828 ** (-self.lambtha * x)
+        pdf_value = self.lambtha * 2.7182818285 ** (-self.lambtha * x)
         return pdf_value
 
     def cdf(self, x):
@@ -50,5 +50,5 @@ class Exponential:
         """
         if x < 0:
             return 0
-        cdf_value = 1 - 2.71828 ** (-self.lambtha * x)
+        cdf_value = 1 - 2.7182818285 ** (-self.lambtha * x)
         return cdf_value
