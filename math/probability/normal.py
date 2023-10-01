@@ -9,6 +9,7 @@
 class Normal:
     """
     Normal distribution class.
+
     """
     def __init__(self, data=None, mean=0., stddev=1.):
         if data is None:
@@ -66,3 +67,31 @@ class Normal:
         pi = 3.1415926536
         pdf_value = (1.0 / (self.stddev * (2 * pi) ** 0.5)) * (e ** exponent)
         return pdf_value
+
+    def cdf(self, x):
+        """
+        Calculates the value of the CDF for a given x-value.
+
+        Args:
+            x (float): The x-value.
+
+        Returns:
+            float: The CDF value for x.
+        """
+        z = (x - self.mean) / self.stddev
+        cdf_value = 0.5 * (1 + self.approx_error_function(z / (2 ** 0.5)))
+        return cdf_value
+
+    def approx_error_function(self, z):
+        """
+        Approximate error function for the CDF calculation.
+
+        Args:
+            z (float): The z-score.
+
+        Returns:
+            float: The approximate error function value.
+        """
+        t = 1.0 / (1.0 + 0.5 * abs(z))
+        erf_value = t * (0.0705230784 + t * (-0.0095693139 + t * (0.0010605370 + t * (-0.0030424860 + t * (0.0003430534 + t * (0.0052844967 + t * (-0.0013918023 + t * (0.0002547913))))))))
+        return 1.0 - 0.5 * (erf_value)
