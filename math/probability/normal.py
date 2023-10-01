@@ -62,5 +62,7 @@ class Normal:
             float: The PDF value for x.
         """
         exponent = -0.5 * ((x - self.mean) / self.stddev) ** 2
-        pdf_value = (1.0 / (self.stddev * (2 * 3.1415926536) ** 0.5)) * (2.7182818285 ** exponent)
+        e = 2.7182818285
+        pi = 3.1415926536
+        pdf_value = (1.0 / (self.stddev * (2 * pi) ** 0.5)) * (e ** exponent)
         return pdf_value
