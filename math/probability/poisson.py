@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
+
 class Poisson:
     """
     Creates a Poisson distribution class.
 
     """
-
 
     def __init__(self, data=None, lambtha=1.):
         """
