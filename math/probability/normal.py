@@ -5,6 +5,7 @@
 
 """
 
+
 class Normal:
     """
     class that represents normal distribution
