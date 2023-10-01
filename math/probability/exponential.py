@@ -1,27 +1,15 @@
 #!/usr/bin/env python3
 
 """
-   This module creates a class Exponential that represents an exponential distribution
-
+   This module creates a class Exponential.
 """
 
 
 class Exponential:
     """
     Exponential distribution class.
-
-    Attributes:
-        lambtha (float): The expected number of occurrences in a given time frame.
-
-    Args:
-        data (list): A list of data points to estimate the distribution. If None, lambtha must be provided.
-        lambtha (float): The expected number of occurrences. Default is 1.0.
-
-    Raises:
-        ValueError: If lambtha is not a positive value.
-        TypeError: If data is not a list.
-        ValueError: If data does not contain at least two data points.
     """
+
     def __init__(self, data=None, lambtha=1.):
         if data is None:
             if lambtha <= 0:
