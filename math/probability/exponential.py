@@ -10,7 +10,6 @@ class Exponential:
     Exponential distribution class.
     """
 
-
     def __init__(self, data=None, lambtha=1.):
         if data is None:
             if lambtha <= 0:
