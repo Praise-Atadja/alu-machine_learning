@@ -4,6 +4,8 @@
    This module creates a Poisson distribution class.
 
 """
+
+
 class Poisson:
     """
     Calculates the value of the PMF for a given number of “successes”
@@ -36,6 +38,5 @@ class Poisson:
         result = 1.0
         for i in range(1, k + 1):
             result *= self.lambtha / i
-        result *= 2.7182818285 ** (-self.lambtha)
+            result *= 2.7182818285 ** (-self.lambtha)
         return result
-    
