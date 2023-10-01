@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 
+
 class Poisson:
     def __init__(self, data=None, lambtha=1.):
+        """"
+          Creates a class Poisson that represents a poisson distribution
+        """
         if data is None:
             if lambtha <= 0:
                 raise ValueError("lambtha must be a positive value")
