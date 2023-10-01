@@ -1,14 +1,20 @@
 #!/usr/bin/env python3
 
-
 class Poisson:
     """
     Creates a Poisson distribution class.
+
     """
+
     def __init__(self, data=None, lambtha=1.):
-        """"
-          Creates a class Poisson that represents a poisson distribution
         """
+        This function initializes the poisson distribution
+        and calculates lambtha if data is given
+        data - list of the data to be used to estimate the distribution
+        lambtha - expected number of occurences in a given time frame
+        """
+
+
         if data is None:
             if lambtha <= 0:
                 raise ValueError("lambtha must be a positive value")
