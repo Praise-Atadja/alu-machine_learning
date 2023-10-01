@@ -5,6 +5,7 @@
 
 """
 
+
 class Binomial:
     """
     Binomial distribution class.
@@ -24,5 +25,5 @@ class Binomial:
                 raise ValueError("data must contain multiple values")
             # Calculate p from the data
             self.p = sum(data) / len(data)
-            # Calculate n using the formula n = mean / p
-            self.n = int(round(sum(data) / self.p))
+            # Calculate n based on data
+            self.n = int(round(len(data) * self.p))  # Updated calculation for n
