@@ -8,7 +8,8 @@
 
 class Poisson:
     """
-    Calculates the value of the PMF for a given number of “successes”
+    Creates poisson distribution class.
+
     """
     def __init__(self, data=None, lambtha=1.):
         if data is None:
@@ -38,5 +39,23 @@ class Poisson:
         result = 1.0
         for i in range(1, k + 1):
             result *= self.lambtha / i
-        result *= 2.7182818285 ** (-self.lambtha)
+        result *= 2.71828 ** (-self.lambtha)
         return result
+
+    def cdf(self, k):
+        """
+        Calculates the value of the CDF for a given number of "successes."
+
+        Args:
+            k (int or float): The number of "successes."
+
+        Returns:
+            float: The CDF value for k.
+        """
+        k = int(k)  # Convert to integer
+        if k < 0:
+            return 0
+        cdf_value = 0.0
+        for i in range(k + 1):
+            cdf_value += self.pmf(i)
+        return cdf_value
