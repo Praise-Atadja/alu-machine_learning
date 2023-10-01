@@ -6,6 +6,7 @@ class Poisson:
 
     """
 
+
     def __init__(self, data=None, lambtha=1.):
         """
         This function initializes the poisson distribution
@@ -13,7 +14,6 @@ class Poisson:
         data - list of the data to be used to estimate the distribution
         lambtha - expected number of occurences in a given time frame
         """
-
 
         if data is None:
             if lambtha <= 0:
