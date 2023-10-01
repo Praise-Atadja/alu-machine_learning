@@ -8,7 +8,6 @@
 class Normal:
     """
     Normal distribution class.
-
     """
     def __init__(self, data=None, mean=0., stddev=1.):
         if data is None:
@@ -22,5 +21,5 @@ class Normal:
             if len(data) < 2:
                 raise ValueError("data must contain multiple values")
             self.mean = sum(data) / len(data)
-            variance = sum((x - self.mean) ** 2 for x in data) / (len(data) - 1)
+            variance = sum((x - self.mean) ** 2 for x in data) / len(data)  # Updated variance calculation
             self.stddev = variance ** 0.5
