@@ -3,7 +3,7 @@
 
 class Poisson:
     """
-    Creates aPoisson distribution class.
+    Creates a Poisson distribution class.
     """
     def __init__(self, data=None, lambtha=1.):
         """"
