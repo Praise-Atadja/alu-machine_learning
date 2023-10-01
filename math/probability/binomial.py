@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-""" This module defines Binomial class that represents binomial distribution """
+""" 
+This module defines binomial distribution.
+"""
+
 
 class Binomial:
     """
