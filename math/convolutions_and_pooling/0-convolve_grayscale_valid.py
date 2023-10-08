@@ -6,9 +6,8 @@ import numpy as np
 
 
 def convolve_grayscale_valid(images, kernel):
-    
-    """ Perform a valid convolution on grayscale images with a given kernel."""
 
+    """ Perform a valid convolution on grayscale images with a given kernel."""
 
     m, h, w = images.shape
     kh, kw = kernel.shape
