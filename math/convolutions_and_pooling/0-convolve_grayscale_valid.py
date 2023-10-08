@@ -4,6 +4,7 @@
 
 import numpy as np
 
+
 def convolve_grayscale_valid(images, kernel):
     m, h, w = images.shape
     kh, kw = kernel.shape
