@@ -18,19 +18,10 @@ class Neuron:
         self.W = np.random.normal(size=(1, nx))
         self.b = 0
         self.A = 0
-    
-    def __init__(self, W):
-        self.W = W
 
-    def __init__(self, b):
-        self.b = b
-    
-    def __init__(self, A):
-        self.A = A
-    
     def get__b(self):
         return self.b
-    
+
     def get__A(self):
         return self.A
 
