@@ -32,9 +32,5 @@ class Neuron:
     def W(self):
         """getter method for W"""
         return self._W
-
-    @A.setter
-    def A(self, value):
-        """setter method for A"""
-        self._A = value
-        return self._A
+    
+    
