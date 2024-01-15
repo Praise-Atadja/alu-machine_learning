@@ -18,14 +18,16 @@ class Neuron:
         self._b = 0
         self._A = 0
 
-    def get_b(self):
+    def getb(self):
         """getter method for b"""
         return self._b
 
-    def get_A(self):
+    def getA(self):
         """getter method for A"""
         return self._A
 
-    def get_W(self):
+    def getW(self):
         """getter method for W"""
         return self._W
+
+    nx = property(getb, getA, getW)
