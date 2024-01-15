@@ -6,8 +6,7 @@ import numpy as np
 
 
 class Neuron:
-    """Each private attribute should have a 
-corresponding getter function (no setter function)."""
+    """Each private attribute should have a corresponding getter function."""
 
     def __init__(self, nx,):
 
@@ -19,11 +18,11 @@ corresponding getter function (no setter function)."""
         self.b = 0
         self.A = 0
 
-        def get__b(self):
-            return self.__b
+    def get__b(self):
+        return self.__b
 
-        def get__A(self):
-            return self.__A
+    def get__A(self):
+        return self.__A
 
-        def get__W(self):
-            return self.__W
+    def get__W(self):
+        return self.__W
