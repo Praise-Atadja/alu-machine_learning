@@ -14,11 +14,11 @@ class Neuron:
             raise TypeError('nx must be an integer')
         if nx < 1:
             raise ValueError('nx must be a positive integer')
-        self.__W = np.random.normal(1, nx)
+        self.__W = np.random.normal(size=(1, nx))
         self.__b = 0
         self.__A = 0
 
-     """Each private attribute should have a corresponding getter function."""
+    """Each private attribute should have a corresponding getter function."""
     def get__b(self):
         """getter method for __b"""
         return self.__b
