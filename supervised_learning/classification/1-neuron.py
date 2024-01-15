@@ -17,17 +17,18 @@ class Neuron:
         self._W = np.random.normal(size=(1, nx))
         self._b = 0
         self._A = 0
-
-    def getb(self):
+    
+    @property
+    def b(self):
         """getter method for b"""
         return self._b
 
+    @property
     def getA(self):
         """getter method for A"""
         return self._A
 
+    @property
     def getW(self):
         """getter method for W"""
         return self._W
-
-    nx = property(getb, getA, getW)
