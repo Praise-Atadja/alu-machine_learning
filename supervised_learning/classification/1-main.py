@@ -10,8 +10,8 @@ X = X_3D.reshape((X_3D.shape[0], -1)).T
 
 np.random.seed(0)
 neuron = Neuron(X.shape[0])
-print(neuron.W)
-print(neuron.b)
-print(neuron.A)
+print(neuron._W)
+print(neuron._b)
+print(neuron._A)
 neuron.A = 10
 print(neuron.A)
