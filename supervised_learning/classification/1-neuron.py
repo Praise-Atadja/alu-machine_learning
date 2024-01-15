@@ -18,14 +18,14 @@ class Neuron:
         self.__b = 0
         self.__A = 0
 
-    def get__b(self):
-        """getter method for __b"""
+    def get_b(self):
+        """getter method for b"""
         return self.__b
 
-    def get__A(self):
-        """getter method for __A"""
+    def get_A(self):
+        """getter method for A"""
         return self.__A
 
-    def get__W(self):
-        """getter method for __W"""
+    def get_W(self):
+        """getter method for W"""
         return self.__W
