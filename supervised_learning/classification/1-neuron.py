@@ -6,7 +6,7 @@ import numpy as np
 
 
 class Neuron:
-    """Module defines a single neuron performing binary classification"""
+    """Each private attribute should have a corresponding getter function."""
 
     def __init__(self, nx,):
 
@@ -18,8 +18,6 @@ class Neuron:
         self.b = 0
         self.A = 0
 
-    """Each private attribute should have a corresponding getter function."""
- 
     def get__b(self):
         return self.__b
 
