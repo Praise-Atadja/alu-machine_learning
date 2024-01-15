@@ -19,10 +19,20 @@ class Neuron:
         self.b = 0
         self.A = 0
     
-    def private_attributes(self, W, b, A):
+    def __init__(self, W):
         self.W = W
-        self.b = b
-        self.A = A
 
-    def get__privates_attributes(self):
-        return self.W, self.b, self.A
+    def __init__(self, b):
+        self.b = b
+    
+    def __init__(self, A):
+        self.A = A
+    
+    def get__b(self):
+        return self.b
+    
+    def get__A(self):
+        return self.A
+
+    def get__W(self):
+        return self.W
