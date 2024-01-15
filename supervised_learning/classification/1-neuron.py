@@ -32,5 +32,3 @@ class Neuron:
     def W(self):
         """getter method for W"""
         return self._W
-    
-    
