@@ -36,4 +36,5 @@ class Neuron:
     @A.setter
     def A(self, value):
         """setter method for A"""
-        self.__A = value
+        self._A = value
+        return self._A
