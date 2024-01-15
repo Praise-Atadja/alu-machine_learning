@@ -18,7 +18,6 @@ class Neuron:
         self.__b = 0
         self.__A = 0
 
-    """Each private attribute should have a corresponding getter function."""
     def get__b(self):
         """getter method for __b"""
         return self.__b
