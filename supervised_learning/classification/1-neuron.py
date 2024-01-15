@@ -6,8 +6,9 @@ import numpy as np
 
 
 class Neuron:
-    """ Class that defines a single neuron performing binary classification  (Based on 0-neuron.py)"""
-
+    """Each private attribute should have a corresponding getter function (no setter function)."""
+    
+    
     def __init__(self, nx):
 
         if not isinstance(nx, int):
@@ -18,7 +19,20 @@ class Neuron:
         self.b = 0
         self.A = 0
     
-    """Each private attribute should have a corresponding getter function (no setter function)."""
+    def __init__(self, W):
+        self.W = W
+
+    def __init__(self, b):
+        self.b = b
     
-    def get_private_attributes(self):
-        return self.__private_attributes
+    def __init__(self, A):
+        self.A = A
+    
+    def get__b(self):
+        return self.b
+    
+    def get__A(self):
+        return self.A
+
+    def get__W(self):
+        return self.W
