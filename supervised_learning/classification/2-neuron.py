@@ -35,6 +35,6 @@ class Neuron:
 
     def forward_prop(self, X):
         """Calculates the forward propagation of the neuron"""
-        z = np.dot(self._W, X.T) + self._b
-        self._A = 1 / (1 + np.exp(-z))
+        weighted_sum = np.dot(self._W, X) + self._b
+        self._A = 1 / (1 + np.exp(-weighted_sum))
         return self._A
