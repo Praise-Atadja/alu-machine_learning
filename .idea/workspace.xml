@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="af2ee208-dea8-474c-92e7-7394a12ad2ba" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/alu-machine_learning.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/10-neural_network.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/11-neural_network.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/12-neural_network.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/13-neural_network.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/14-neural_network.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/15-neural_network.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/16-deep_neural_network.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/17-deep_neural_network.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/18-deep_neural_network.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/19-deep_neural_network.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/2-main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/2-neuron.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/20-deep_neural_network.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/21-deep_neural_network.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/22-deep_neural_network.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/23-deep_neural_network.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/24-one_hot_encode.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/25-one_hot_decode.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/26-deep_neural_network.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/27-deep_neural_network.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/28-deep_neural_network.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/3-neuron.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/4-neuron.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/5-neuron.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/6-neuron.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/7-neuron.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/8-neural_network.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/9-neural_network.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/show_data.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised_learning/classification/show_multi_data.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
+  <component name="ProjectId" id="2azufPzWDqgIann2UkAdvP8L9tF" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;aDefault&quot;
+  }
+}</component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="af2ee208-dea8-474c-92e7-7394a12ad2ba" name="Changes" comment="" />
+      <created>1705333832805</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1705333832805</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+</project>
