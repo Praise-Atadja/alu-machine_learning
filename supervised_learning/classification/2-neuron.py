@@ -2,39 +2,42 @@
 
 """Module defines a single neuron performing binary classification"""
 
+
 import numpy as np
 
 
 class Neuron:
     """Each private attribute should have a corresponding getter function."""
 
+
     def __init__(self, nx):
-
-        if not isinstance(nx, int):
-            raise TypeError('nx must be an integer')
+        """class constructor"""
+        if type(nx) is not int:
+            raise TypeError("nx must be an integer")
         if nx < 1:
-            raise ValueError('nx must be a positive integer')
-        self._W = np.random.randn(1, nx)
-        self._b = 0
-        self._A = 0
-
-    @property
-    def b(self):
-        """getter method for b"""
-        return self._b
-
-    @property
-    def A(self):
-        """getter method for A"""
-        return self._A
+            raise ValueError("nx must be a positive integer")
+        self.__W = np.random.randn(1, nx)
+        self.__b = 0
+        self.__A = 0
 
     @property
     def W(self):
-        """getter method for W"""
-        return self._W
+        """Getter method for W"""
+        return self.__W
+
+    @property
+    def b(self):
+        """Getter method for b"""
+        return self.__b
+
+    @property
+    def A(self):
+        """Getter method for A"""
+        return self.__A
 
     def forward_prop(self, X):
         """Calculates the forward propagation of the neuron"""
-        weighted_sum = np.dot(self._W, X) + self._b
-        self._A = 1 / (1 + np.exp(-weighted_sum))
-        return self._A
+        Z = np.dot(self.__W, X) + self.__b
+        sigmoid = 1 / (1 + np.exp(-Z))
+        self.__A = sigmoid
+        return self.__A
