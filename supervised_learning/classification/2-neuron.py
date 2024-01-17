@@ -33,8 +33,12 @@ class Neuron:
         """getter method for W"""
         return self._W
 
+    def sigmoid(self, z):
+        """sigmoid function"""
+        return 1 / (1 + np.exp(-z))
+
     def forward_prop(self, X):
         """Calculates the forward propagation of the neuron"""
-        z = np.dot(self.W, X) + self._b
-        self._A = 1 / (1 + np.exp(-z))
+        z = np.matmul(self._W, X) + self._b
+        self._A = self.sigmoid(z)
         return self._A
