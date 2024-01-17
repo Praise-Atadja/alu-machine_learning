@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import numpy as np
 
 Neuron = __import__('2-neuron').Neuron
@@ -14,3 +12,4 @@ neuron._Neuron__b = 1
 A = neuron.forward_prop(X)
 if (A is neuron.A):
         print(A)
+        
