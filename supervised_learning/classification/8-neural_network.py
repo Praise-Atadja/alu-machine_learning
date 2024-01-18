@@ -5,7 +5,6 @@
 import numpy as np
 
 
-
 class Neuron:
     """Each private attribute should have a corresponding getter function."""
 
