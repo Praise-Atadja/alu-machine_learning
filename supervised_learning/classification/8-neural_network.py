@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
-"""Module defines a single neuron performing binary classification"""
+"""Module defines a neural network with one hidden layer performing binary classification:
+
+"""
 
 import numpy as np
 
@@ -72,6 +74,6 @@ class NeuralNetwork:
 
     def evaluate(self, X):
         """Evaluates the neural network's predictions"""
-        A1, A2 = self.forward_prop(X)
+        _, A2 = self.forward_prop(X)
         predictions = np.round(A2).astype(int)
         return predictions
