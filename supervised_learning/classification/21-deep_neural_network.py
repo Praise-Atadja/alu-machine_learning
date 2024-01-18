@@ -99,8 +99,8 @@ class DeepNeuralNetwork:
             if i == self.__L:
                 dz = A - Y
             else:
-                dz = np.dot(W.T, dz) * (A * (1 - A))
-            dw = np.dot(dz, A_prev.T) / m
+                dz = np.matmul(W.T, dz) * (A * (1 - A))
+            dw = np.matmul(dz, A_prev.T) / m
             db = np.sum(dz, axis=1, keepdims=True) / m
             self.__weights['W{}'.format(i)] = W - alpha * dw
             self.__weights['b{}'.format(i)] = b - alpha * db
