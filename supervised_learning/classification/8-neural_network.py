@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
-"""Module defines a neural network with one hidden layer performing binary classification:
+"""Module defines a neural network with one 
+hidden layer performing binary classification:
 
 """
+
 
 import numpy as np
 
