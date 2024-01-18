@@ -3,7 +3,7 @@
 """Module defines a single neuron performing binary classification"""
 
 import numpy as np
-import matplotlib.pyplot as plt
+
 
 
 class Neuron:
