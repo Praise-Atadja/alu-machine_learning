@@ -5,6 +5,7 @@ hidden layer performing binary classification:
 
 """
 
+import numpy as np
 
 import numpy as np
 
