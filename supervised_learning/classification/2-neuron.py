@@ -9,7 +9,6 @@ import numpy as np
 class Neuron:
     """Each private attribute should have a corresponding getter function."""
 
-
     def __init__(self, nx):
         """class constructor"""
         if type(nx) is not int:
