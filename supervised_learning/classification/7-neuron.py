@@ -3,6 +3,7 @@
 """Module defines a single neuron performing binary classification"""
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 class Neuron:
@@ -63,32 +64,33 @@ class Neuron:
 
     def train(self, X, Y, iterations=5000, alpha=0.05, verbose=True, graph=True, step=100):
         """Trains the neuron"""
-    if not isinstance(iterations, int):
-        raise TypeError('iterations must be an integer')
-    if iterations < 0:
-        raise ValueError('iterations must be a positive integer')
-    if not isinstance(alpha, float):
-        raise TypeError('alpha must be a float')
-    if alpha < 0:
-        raise ValueError('alpha must be positive')
-    if verbose or graph:
-        if not isinstance(step, int):
-            raise TypeError('step must be an integer')
-        if step < 0 or step > iterations:
-            raise ValueError('step must be positive and <= iterations')
-    cost_list = []
-    for i in range(iterations + 1):
-        A = self.forward_prop(X)
-        cost = self.cost(Y, A)
-        if verbose and i % step == 0:
-            print('Cost after {} iterations: {}'.format(i, cost))
-            cost_list.append(cost)
-        if i < iterations:
-            self.gradient_descent(X, Y, A, alpha)
-    if graph:
-        plt.plot(np.arange(0, iterations + 1), cost_list)
-        plt.xlabel('iteration')
-        plt.ylabel('cost')
-        plt.title('Training Cost')
-        plt.show()
-    self.evaluate(X, Y)
+        if not isinstance(iterations, int):
+            raise TypeError('iterations must be an integer')
+        if iterations < 0:
+            raise ValueError('iterations must be a positive integer')
+        if not isinstance(alpha, float):
+            raise TypeError('alpha must be a float')
+        if alpha < 0:
+            raise ValueError('alpha must be positive')
+        if verbose or graph:
+            if not isinstance(step, int):
+                raise TypeError('step must be an integer')
+            if step < 0 or step > iterations:
+                raise ValueError('step must be positive and <= iterations')
+        cost_list = []
+        for i in range(iterations + 1):
+            A = self.forward_prop(X)
+            cost = self.cost(Y, A)
+            if verbose and i % step == 0:
+                print('Cost after {} iterations: {}'.format(i, cost))
+                cost_list.append(cost)
+            if i < iterations:
+                self.gradient_descent(X, Y, A, alpha)
+        if graph:
+            import matplotlib.pyplot as plt
+            plt.plot(np.arange(0, iterations + 1), cost_list)
+            plt.xlabel('iteration')
+            plt.ylabel('cost')
+            plt.title('Training Cost')
+            plt.show()
+        self.evaluate(X, Y)
