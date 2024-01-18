@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
-"""Module defines a neural network with one 
+"""Module defines a neural network with one
 hidden layer performing binary classification:
 
 """
 
 
 import numpy as np
+
 
 class NeuralNetwork:
     """NeuralNetwork class"""
@@ -21,10 +22,10 @@ class NeuralNetwork:
             raise TypeError('nodes must be an integer')
         if nodes < 1:
             raise ValueError('nodes must be positive')
-        self.__W1 = np.random.randn(1, nx)
+        self.__W1 = np.random.normal(size=(nodes, nx))
         self.__b1 = 0
         self.__A1 = 0
-        self.__W2 = np.random.randn(1, nx)
+        self.__W2 = np.random.normal(size=(1, nodes))
         self.__b2 = 0
         self.__A2 = 0
 
