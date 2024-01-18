@@ -14,11 +14,11 @@ class NeuralNetwork:
 
     def __init__(self, nx, nodes):
         """Constructor method"""
-        if not isinstance(nx, int):
+        if type(nx) is not int:
             raise TypeError('nx must be an integer')
         if nx < 1:
             raise ValueError('nx must be positive')
-        if not isinstance(nodes, int):
+        if type(nodes) is not int:
             raise TypeError('nodes must be an integer')
         if nodes < 1:
             raise ValueError('nodes must be positive')
