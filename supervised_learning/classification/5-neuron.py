@@ -35,9 +35,10 @@ class Neuron:
 
     def forward_prop(self, X):
         """Calculates the forward propagation of the neuron"""
-        z = np.dot(self._W, X) + self._b
-        self._A = 1 / (1 + np.exp(-z))
-        return self._A
+        Z = np.dot(self.__W, X) + self.__b
+        sigmoid = 1 / (1 + np.exp(-Z))
+        self.__A = sigmoid
+        return self.__A
 
     def cost(self, Y, A):
         """Calculates the cost of the model using logistic regression"""
