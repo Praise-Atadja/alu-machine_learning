@@ -45,7 +45,7 @@ class NeuralNetwork:
     def W2(self):
         """getter method for W2"""
         return self._W2
-    
+
     @property
     def b2(self):
         """getter method for b2"""
