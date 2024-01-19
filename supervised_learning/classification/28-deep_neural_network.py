@@ -1,321 +1,365 @@
 #!/usr/bin/env python3
-"""Module containing the class DeepNeuralNetwork which defines a deep neural
-network performing binary classification."""
+"""
+defines DeepNeuralNetwork class that defines
+a deep neural network performing multiclass classification
+"""
+
 
 import numpy as np
-import matplotlib.pyplot as plt
-import pickle
 
 
-class DeepNeuralNetwork():
-    """Class that defines a deep neural network performing binary
-    classification."""
+class DeepNeuralNetwork:
+    """
+    class that represents a deep neural network
+    performing multiclass classification
 
-    def __init__(self, nx, layers, activation='sig'):
-        """Class constructor
+    class constructor:
+        def __init__(self, nx, layers)
 
-        Args:
-            nx (int): The number of input features
-            layers (list[int]): List representing the number of nodes in each
-                layer of the network
+    private instance attributes:
+        L: the number of layers in the neural network
+        cache: a dictionary holding all intermediary values of the network
+        weights: a dictionary holding all weights and biases of the network
+
+    public methods:
+        def forward_prop(self, X):
+            calculates the forward propagation of the neural network
+        def cost(self, Y, A):
+            calculates the cost of the model using logistic regression
+        def evaluate(self, X, Y):
+            evaluates the neural network's predictions
+        def gradient_descent(self, Y, cache, alpha=0.05):
+            calculates one pass of gradient descent on the neural network
+        def train(self, X, Y, iterations=5000, alpha=0.05,
+                    verbose=True, graph=True, step=100):
+            trains the neural network and updates __weights and __cache
+        def save(self, filename):
+            saves the instance object to a file in pickle format
+        def load(filename):
+            loads a pickled DeepNeuralNetwork object from a file
+    """
+
+    def __init__(self, nx, layers):
         """
-        if not isinstance(nx, int):
-            raise TypeError("nx must be an integer")
-        elif nx < 1:
-            raise ValueError("nx must be a positive integer")
-        elif not isinstance(layers, list) or len(layers) < 1:
-            raise TypeError("layers must be a list of positive integers")
-        elif activation is not 'sig' and activation is not 'tanh':
-            raise ValueError("activation must be 'sig' or 'tanh'")
+        class constructor
 
-        self.__L = len(layers)
-        self.__activation = activation
-        self.__cache = {}
+        parameters:
+            nx [int]: the number of input features
+                If nx is not an integer, raise a TypeError.
+                If nx is less than 1, raise a ValueError.
+            layers [list]: representing the number of nodes in each layer
+                If layers is not a list, raise TypeError.
+                If elements in layers are not all positive ints,
+                    raise a TypeError.
+
+        sets private instance attributes:
+            __L: the number of layers in the neural network,
+                initialized based on layers
+            __cache: a dictionary holding all intermediary values for network,,
+                initialized as an empty dictionary
+            __weights: a dictionary holding all weights/biases of the network,
+                weights initialized using the He et al. method
+                    using the key W{l} where {l} is the hidden layer
+                biases initialized to 0s
+                    using the key b{l} where {1} is the hidden layer
+        """
+        if type(nx) is not int:
+            raise TypeError("nx must be an integer")
+        if nx < 1:
+            raise ValueError("nx must be a positive integer")
+        if type(layers) is not list or len(layers) < 1:
+            raise TypeError("layers must be a list of positive integers")
         weights = {}
-        prev = nx
-        for i, L in enumerate(layers, 1):
-            if not isinstance(L, int) and L < 0:
+        previous = nx
+        for index, layer in enumerate(layers, 1):
+            if type(layer) is not int or layer < 0:
                 raise TypeError("layers must be a list of positive integers")
-            weights["b{}".format(i)] = np.zeros((L, 1))
-            weights["W{}".format(i)] = (np.random.randn(L, prev) *
-                                        np.sqrt(2 / prev))
-            prev = L
+            weights["b{}".format(index)] = np.zeros((layer, 1))
+            weights["W{}".format(index)] = (
+                np.random.randn(layer, previous) * np.sqrt(2 / previous))
+            previous = layer
+        self.__L = len(layers)
+        self.__cache = {}
         self.__weights = weights
 
     @property
     def L(self):
-        """Getter for self.__L"""
-        return self.__L
+        """
+        gets the private instance attribute __L
+        __L is the number of layers in the neural network
+        """
+        return (self.__L)
 
     @property
     def cache(self):
-        """Getter for self.__cache"""
-        return self.__cache
+        """
+        gets the private instance attribute __cache
+        __cache holds all the intermediary values of the network
+        """
+        return (self.__cache)
 
     @property
     def weights(self):
-        """Getter for self.__weights"""
-        return self.__weights
-
-    @property
-    def activation(self):
-        """Getter for self.__activation"""
-        return self.__activation
+        """
+        gets the private instance attribute __weights
+        __weights holds all the wrights and biases of the network
+        """
+        return (self.__weights)
 
     def forward_prop(self, X):
-        """Function that calculates the forward propagation of the deep
-            neural network.
-
-        Args:
-            X (numpy.ndarray): N-dimensional array with shape (nx, m) that
-            contains the input data, where nx is the number of input features
-            to the deep neural network and m is the number of examples.
-
-        Returns:
-            A (numpy.ndarray[(float)]): The activated output for the deep
-            neural network.
         """
-        A = X
-        self.cache["A{}".format(0)] = X
-        for L in range(1, self.L + 1):
-            prev = A
-            W = self.weights["W{}".format(L)]
-            b = self.weights["b{}".format(L)]
-            Z = np.matmul(W, A) + b
-            if L == self.L:
-                A = self.softmax(Z)
-            else:
-                if self.activation == 'sig':
-                    A = self.sigmoid(Z)
-                if self.activation == 'tanh':
-                    A = self.tanh(Z)
-            self.__cache["A{}".format(L)] = A
-        return A, self.cache
+        calculates the forward propagation of the neuron
+
+        parameters:
+            X [numpy.ndarray with shape (nx, m)]: contains the input data
+                nx is the number of input features to the neuron
+                m is the number of examples
+
+        updates the private attribute __cache using sigmoid activation function
+        sigmoid function:
+            activated output = 1 / (1 + e^(-z))
+            z = sum of ((__Wi * __Xi) + __b) from i = 0 to nx
+        activated outputs of each layer are saved in __cache
+            as A{l} where {l} is the hidden layer
+        X is saved to __cache under key A0
+
+        return:
+            the output of the neural network and the cache, respectively
+        """
+        self.__cache["A0"] = X
+        for index in range(self.L):
+            W = self.weights["W{}".format(index + 1)]
+            b = self.weights["b{}".format(index + 1)]
+            z = np.matmul(W, self.cache["A{}".format(index)]) + b
+            A = 1 / (1 + (np.exp(-z)))
+            self.__cache["A{}".format(index + 1)] = A
+        return (A, self.cache)
 
     def cost(self, Y, A):
-        """Function that alculates the cost of the model using
-            logistic regression.
+        """
+        calculates the cost of the model using logistic regression
 
-        Args:
-            Y (numpy.ndarray): N-dimensional array with shape (1, m) that
-                contains the correct labels for the input data.
-            A (numpy.ndarray): N-dimensioal array with shape (1, m) containing
-                the activated output of the neuron for each example.
-                Sometiems refered to as "y hat" a y with a "^" above it.
+        parameters:
+            Y [one-hot numpy.ndarray with shape (classes, m)]:
+                contains correct labels for the input data
+            A [numpy.ndarray with shape (1, m)]:
+                contains the activated output of the neuron for each example
 
-        Returns:
-            The cost of the model.
+        logistic regression loss function:
+            loss = -((Y * log(A)) + ((1 - Y) * log(1 - A)))
+            To avoid log(0) errors, uses (1.0000001 - A) instead of (1 - A)
+        logistic regression cost function:
+            cost = (1 / m) * sum of loss function for all m example
+
+        return:
+            the calculated cost
         """
         m = Y.shape[1]
-        loss = np.sum(-Y * np.log(A))
-        return loss / m
+        m_loss = np.sum((Y * np.log(A)) + ((1 - Y) * np.log(1.0000001 - A)))
+        cost = (1 / m) * (-(m_loss))
+        return (cost)
 
     def evaluate(self, X, Y):
-        """Function that valuates the deep neural network’s predictions.
+        """
+        evaluates the neural network's predictions
 
-        Args:
-            X (numpy.ndarray): N-dimensioal array with shape (nx, m) that
-                contains the input data, where nx is the number of input
-                features to the neuron and m is the number of examples.
-            Y (numpy.ndarray): N-dimensioal array with shape (1, m) that
-                contains the correct labels for the input data.
+        parameters:
+            X [numpy.ndarray with shape (nx, m)]: contains the input data
+                nx is the number of input features to the neuron
+                m is the number of examples
+            Y [one-hot numpy.ndarray with shape (classes, m)]:
+                contains correct labels for the input data
 
-        Returns:
-            A (numpy.ndarray): The neuron’s prediction. The predictions shape
-                will be (1, m), containing the predicted labels for each
-                example.
-            cost (float): The cost of the network.
+        returns:
+            the neuron's prediction and the cost of the network, respectively
+            prediction is numpy.ndarray with shape (1, m), containing
+                predicted labels for each example
+            label values should be 1 if the output of the network is >= 0.5,
+                0 if the output of the network is < 0.5
         """
         A, cache = self.forward_prop(X)
         cost = self.cost(Y, A)
-        A = np.where(A >= 0.5, 1, 0)
-        return A, cost
+        prediction = np.where(A >= 0.5, 1, 0)
+        return (prediction, cost)
 
     def gradient_descent(self, Y, cache, alpha=0.05):
-        """Function that calculates one pass of gradient descent on the neural
-        network.
+        """
+        calculates one pass of gradient descent on the neural network
 
-        Args:
-            Y (numpy.ndarray): N-dimensioal array with shape (1, m) that
-                contains the correct labels for the input data.
-            cache (dictionary): Dictionary containing all the intermediary
-                values of the network.
-            alpha (float, optional): The learning rate. Defaults to 0.05.
+        parameters:
+            Y [one-hot numpy.ndarray with shape (classes, m)]:
+                contains correct labels for the input data
+            cache [dictionary]: contains intermediary values of the network,
+                including X as cache[A0]
+            alpha [float]: learning rate
+
+        updates the private instance attribute __weights
+            using back propagation
+
+        derivative of loss function with respect to A:
+            dA = (-Y / A) + ((1 - Y) / (1 - A))
+        derivative of A with respect to z:
+            dz = A * (1 - A)
+        combining two above with chain rule,
+        derivative of loss function with respect to z:
+            dz = A - Y
+        using chain rule with above derivative,
+        derivative of loss function with respect to __W:
+            d__Wi = Xidz or vectorized as d__W = (1 / m) * (dz dot X transpose)
+        derivative of loss function with respect to __b:
+            d__bi = dz of vectorized as d__b = (1 / m) * (sum of dz elements)
+
+        for neural network, using the derivatives above:
+        derivative of loss function with respect to z2:
+            dz2 = A2 - Y
+        derivative of loss function with respect to __W2:
+            d__W2 = (1 / m) * (dz1 dot A1 transpose)
+        derivative of loss function with respect to __b2:
+            d__b2 = (1 / m) * (sum of dz2 over axis 1)
+        derivative of loss function with respect to z1:
+            dz1 = (__W2 transpose dot dz2) * A1(1 - A1)
+        derivative of loss function with respect to __W1:
+            d__W1 = (1 / m) * (dz dot X transpose)
+
+        one-step of gradient descent updates the attributes with the following:
+            __W = __W - (alpha * d__W)
+            __b = __b - (alpha * d__b)
         """
         m = Y.shape[1]
-
-        for i in range(self.L, 0, -1):
-            Ai = cache["A{}".format(i)]
-            Ai_next = cache["A{}".format(i - 1)]
-
-            if i == self.L:
-                dZi = (Ai - Y)
+        back = {}
+        for index in range(self.L, 0, -1):
+            A = cache["A{}".format(index - 1)]
+            if index == self.L:
+                back["dz{}".format(index)] = (cache["A{}".format(index)] - Y)
             else:
-                if self.activation == 'sig':
-                    dZi = dAi_next * self.sigmoid_prime(Ai)
-                elif self.activation == 'tanh':
-                    dZi = dAi_next * self.tanh_prime(Ai)
-            dWi = np.matmul(dZi, Ai_next.T) / m
-            dbi = np.sum(dZi, axis=1, keepdims=True) / m
+                dz_prev = back["dz{}".format(index + 1)]
+                A_current = cache["A{}".format(index)]
+                back["dz{}".format(index)] = (
+                    np.matmul(W_prev.transpose(), dz_prev) *
+                    (A_current * (1 - A_current)))
+            dz = back["dz{}".format(index)]
+            dW = (1 / m) * (np.matmul(dz, A.transpose()))
+            db = (1 / m) * np.sum(dz, axis=1, keepdims=True)
+            W_prev = self.weights["W{}".format(index)]
+            self.__weights["W{}".format(index)] = (
+                self.weights["W{}".format(index)] - (alpha * dW))
+            self.__weights["b{}".format(index)] = (
+                self.weights["b{}".format(index)] - (alpha * db))
 
-            dZ_prev = dZi
-            Wi = self.weights["W{}".format(i)]
-            dAi_next = np.matmul(Wi.T, dZi)
-
-            self.__weights["W{}".format(i)] -= (alpha * dWi)
-            self.__weights["b{}".format(i)] -= (alpha * dbi)
-
-    def train(self, X, Y, iterations=5000, alpha=0.05, verbose=True,
-              graph=True, step=100):
-        """Function that trains the neural network.
-
-        Args:
-            X (numpy.ndarray): N-dimensioal array with shape (nx, m) that
-                contains the input data, where nx is the number of input
-                features to the neuron and m is the number of examples.
-            Y (numpy.ndarray): N-dimensioal array with shape (1, m) that
-                contains the correct labels for the input data.
-            iterations (int, optional): The number of iterations to train over.
-                Defaults to 5000.
-            alpha (float, optional): The learning rate. Defaults to 0.05.
-            verbose (boolean, optional): Defines whether or not to print
-                information about the training. If True, prints "Cost after
-                {iteration} iterations: {cost}" every step iterations. Includes
-                data from the 0th and last iteration.
-            step (int, optoinal): The number of iterations between printing
-                using the verbose.
-            graph (boolean, optional): Defines whether or not to graph
-                information about the training once the training has completed.
-                If True, plots the training data every step iterations.
-
-        Returns:
-            Evaluation of the training data after iterations of training
-            have occurred.
+    def train(self, X, Y, iterations=5000, alpha=0.05,
+              verbose=True, graph=True, step=100):
         """
-        if not isinstance(iterations, int):
+        trains the neuron and updates __weights and __cache
+
+        parameters:
+            X [numpy.ndarray with shape (nx, m)]: contains the input data
+                nx is the number of input features to the neuron
+                m is the number of examples
+            Y [one-hot numpy.ndarray with shape (classes, m)]:
+                contains correct labels for the input data
+            iterations [int]: the number of iterations to train over
+                If iterations is not an int, raise TypeError.
+                If iterations is not positive, raise ValueError.
+            alpha [float]: learning rate
+                If alpha is not an int, raise TypeError.
+                If alpha is not positive, raise ValueError.
+            verbose [boolean]:
+                defines whether or not to print information about training
+                If True, prints "Cost after {iteration} iterations: {cost}
+                    after every step iterations,
+                    includes data from 0th and last iteration
+            graph [boolean]:
+                defines whether or not to graph information about training
+                If True, plots the training data every step iterations:
+                    Training data is shown as a blue line,
+                    X-axis is labeled as "iteration",
+                    Y-axis is labeled as "cost",
+                    Title of the plot is "Training Cost",
+                    Includes data from the 0th and last iteration.
+            step [int]: the number of iterations between printing verbose info
+                    of plotting graph data point
+                If verbose or graph is True:
+                    If step is not int, raise TypeError.
+                    If step is not positive or is greater than iterations,
+                        raise ValueError.
+
+        returns:
+            the evaluation of the training data after iterations of training
+        """
+        if type(iterations) is not int:
             raise TypeError("iterations must be an integer")
-        elif iterations <= 0:
+        if iterations <= 0:
             raise ValueError("iterations must be a positive integer")
-        elif not isinstance(alpha, float):
+        if type(alpha) is not float:
             raise TypeError("alpha must be a float")
-        elif alpha <= 0:
+        if alpha <= 0:
             raise ValueError("alpha must be positive")
-
-        x = np.arange(0, iterations, step)
-        y = []
-
-        for i in range(iterations):
-            A, cache = self.forward_prop(X)
-            self.gradient_descent(Y, cache, alpha)
-            if (i) % step == 0 or i == 0:
-                cost = self.cost(Y, A)
-                y.append(cost)
-                if verbose:
-                    print("Cost after {} iterations: {}"
-                          .format((i), cost))
-        if verbose:
-            print("Cost after {} iterations: {}"
-                  .format((i + 1), cost))
-
+        if verbose or graph:
+            if type(step) is not int:
+                raise TypeError("step must be an integer")
+            if step <= 0 or step > iterations:
+                raise ValueError("step must be positive and <= iterations")
         if graph:
-            plt.plot(x, y, "b-")
-            plt.xlabel('iteration')
-            plt.ylabel('cost')
+            import matplotlib.pyplot as plt
+            x_points = np.arange(0, iterations + 1, step)
+            points = []
+        for itr in range(iterations):
+            A, cache = self.forward_prop(X)
+            if verbose and (itr % step) == 0:
+                cost = self.cost(Y, A)
+                print("Cost after " + str(itr) + " iterations: " + str(cost))
+            if graph and (itr % step) == 0:
+                cost = self.cost(Y, A)
+                points.append(cost)
+            self.gradient_descent(Y, cache, alpha)
+        itr += 1
+        if verbose:
+            cost = self.cost(Y, A)
+            print("Cost after " + str(itr) + " iterations: " + str(cost))
+        if graph:
+            cost = self.cost(Y, A)
+            points.append(cost)
+            y_points = np.asarray(points)
+            plt.plot(x_points, y_points, 'b')
+            plt.xlabel("iteration")
+            plt.ylabel("cost")
             plt.title("Training Cost")
             plt.show()
-
-        return self.evaluate(X, Y)
+        return (self.evaluate(X, Y))
 
     def save(self, filename):
-        """Function that saves the instance object to a file in pickle format.
-        If filename does not have the extension .pkl, it will be added.
-
-        Args:
-            filename (str): The file to which the object will be saved.
         """
-        ext = ".pkl"
-        if ext not in filename:
-            filename += ext
-        try:
-            with open(filename, "wb") as file:
-                pickle.dump(self, file)
-        except Exception:
-            return None
+        saves the instance object to a file in pickle format
 
+        parameters:
+            filename [string]: file to save the object to
+                If filename does not have extension .pkl, add it.
+        """
+        import pickle
+        if type(filename) is not str:
+            return
+        if filename[-4:] != ".pkl":
+            filename = filename[:] + ".pkl"
+        with open(filename, 'wb') as f:
+            pickle.dump(self, f)
+            f.close()
+
+    @staticmethod
     def load(filename):
-        """Function that loads a pickled DeepNeuralNetwork object.
-
-        Args:
-            filename ([type]): The file from which the object should be loaded
-
-        Returns:
-            The loaded object, or None if filename doesn’t exist.
         """
+        loads a pickled DeepNeuralNetwork object from a file
+
+        parameters:
+            filename [string]: file to load object from
+
+        returns:
+            the loaded object,
+                or None if filename doesn't exist
+        """
+        import pickle
         try:
-            with open(filename, "rb") as file:
-                contents = pickle.load(file)
-                return contents
-        except Exception:
+            with open(filename, 'rb') as f:
+                obj = pickle.load(f)
+                return obj
+        except FileNotFoundError:
             return None
-
-    def sigmoid(self, Z):
-        """Does the math for the Sigmoid activation function.
-
-        Args:
-            Z (numpy.ndarray): N-demensional array of the dZ values of each
-        node in a neural network.
-
-        Returns:
-            Activation values of the layer of nodes.
-        """
-        return 1/(1 + np.exp(-Z))
-
-    def sigmoid_prime(self, A):
-        """Does the math for the Sigmoid` activation function.
-
-        Args:
-            A (numpy.ndarray): N-demensional array of the activation values
-            of the layer of nodes.
-
-        Returns:
-            dZ values of each node in a neural network.
-        """
-        return (A * (1 - A))
-
-    def softmax(self, Z):
-        """Does the math for the Softmax activation function.
-
-        Args:
-            Z (numpy.ndarray): N-demensional array of the dZ values of each
-        node in a neural network.
-
-        Returns:
-            Activation values of the layer of nodes.
-        """
-        T = np.exp(Z)
-        return T / np.sum(T, axis=0, keepdims=True)
-
-    def tanh(self, Z):
-        """Does the math for the Tanh activation function.
-
-        Args:
-            Z (numpy.ndarray): N-demensional array of the dZ values of each
-        node in a neural network.
-
-        Returns:
-            Activation values of the layer of nodes.
-        """
-        # (np.exp(Z) - np.exp(-Z)) / (np.exp(Z) + np.exp(-Z))
-        return np.tanh(Z)
-
-    def tanh_prime(self, A):
-        """Does the math for the Tanh` activation function.
-
-        Args:
-            A (numpy.ndarray): N-demensional array of the activation values
-            of the layer of nodes.
-
-        Returns:
-            dZ values of each node in a neural network.
-        """
-        return 1 - (A ** 2)
