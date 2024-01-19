@@ -12,15 +12,7 @@ class DeepNeuralNetwork:
     """DeepNeuralNetwork class"""
 
     def __init__(self, nx, layers):
-        """Constructor method for deep neural network
-        nx is the number of input features
-            nx must be a positive integer
-        layers is a list representing the number of nodes in each layer
-            layers must be a list of positive integers
-        L: number of layers in the neural network
-        cache: dictionary to hold all intermediary values of the network
-        weights: dictionary to hold all weights and biases of the network
-            weights[layer] = [weights, biases]"""
+        """Constructor method for deep neural network"""
         if type(nx) is not int:
             raise TypeError("nx must be an integer")
         if nx < 1:
