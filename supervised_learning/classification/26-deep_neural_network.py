@@ -148,8 +148,6 @@ class DeepNeuralNetwork:
 
     @staticmethod
     def load(filename):
-        if filename is None or not isinstance(filename, str):
-            return None
         try:
             with open(filename, 'rb') as f:
                 obj = pickle.load(f)
