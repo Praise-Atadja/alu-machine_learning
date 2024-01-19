@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-""" Deep Neural Network"""
+"""Module defines a deep neural network performing binary classification"""
 import numpy as np
 import matplotlib.pyplot as plt
 import pickle
 
 
 class DeepNeuralNetwork:
-    """ creating deepNN class"""
+    """ deep neural network performing binary classification"""
 
     def __init__(self, nx, layers):
-        """ initialize deepNN"""
+        """ initialize deep neural network object"""
         if type(nx) != int:
             raise TypeError("nx must be an integer")
         if nx < 1:
@@ -71,7 +71,7 @@ class DeepNeuralNetwork:
             int), self.cost(Y, self.__cache["A" + str(self.__L)])
 
     def gradient_descent(self, Y, cache, alpha=0.05):
-        """ gradient descent for deepNN"""
+        """ gradient descent for deep neural network"""
         m = Y.shape[1]
         for x in reversed(range(1, self.__L + 1)):
             AN1 = self.__cache["A" + str(x - 1)]
