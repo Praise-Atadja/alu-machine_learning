@@ -101,7 +101,7 @@ class DeepNeuralNetwork:
             dz = np.matmul(self.__weights["W{}".format(i)].T, dz) * da
             self.__weights["W{}".format(i)] -= alpha * dw.T
             self.__weights["b{}".format(i)] -= alpha * db
-
+    
     def train(self, X, Y, iterations=5000, alpha=0.05, verbose=True, graph=True, step=100):
         """Trains the neural network"""
         if not isinstance(iterations, int):
@@ -141,9 +141,10 @@ class DeepNeuralNetwork:
         if type(filename) is not str:
             return
         if filename[-4:] != ".pkl":
-            filename += '.pkl'
+            filename = filename + ".pkl"
         with open(filename, 'wb') as f:
             pickle.dump(self, f)
+            f.close()
 
     @staticmethod
     def load(filename):
