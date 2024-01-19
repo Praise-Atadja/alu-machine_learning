@@ -91,17 +91,16 @@ class DeepNeuralNetwork:
     def gradient_descent(self, Y, cache, alpha=0.05):
         """Calculates one pass of gradient descent on the neural network"""
         m = Y.shape[1]
-        for i in range(self.__L, 0, +1):
+        for i in range(self.__L, 0, -1):
+            A = cache['A{}'.format(i - 1)]
             if i == self.__L:
                 dz = cache['A{}'.format(i)] - Y
             else:
                 dz = np.multiply(
-                    np.matmul(
-                        self.__weights['W{}'.format(i + 1)].T, dz
-                    ),
-                    cache['A{}'.format(i)] * (1 - cache['A{}'.format(i)])
+                    da, np.multiply(A, 1 - A)
                 )
-            dw = np.matmul(dz, cache['A{}'.format(i - 1)].T) / m
-            db = np.sum(dz, axis=1, keepdims=True)
+            dw = np.dot(dz, A.T) / m
+            db = np.sum(dz, axis=1, keepdims=True) / m
+            da = np.dot(self.__weights['W{}'.format(i)].T, dz)
             self.__weights['W{}'.format(i)] -= alpha * dw
             self.__weights['b{}'.format(i)] -= alpha * db
