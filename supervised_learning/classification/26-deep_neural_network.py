@@ -139,11 +139,9 @@ class DeepNeuralNetwork:
 
     def save(self, filename):
         """Saves the instance object to a file in pickle format"""
-        if type(filename) is not str:
-            return None
-        if filename[-4:] != ".pkl":
-            filename = filename + ".pkl"
-        with open(filename, mode="wb") as f:
+        if filename[-4:] != '.pkl':
+            filename += '.pkl'
+        with open(filename, 'wb') as f:
             pickle.dump(self, f)
 
     @staticmethod
