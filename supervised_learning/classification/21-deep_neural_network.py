@@ -89,18 +89,19 @@ class DeepNeuralNetwork:
         return prediction, cost
 
     def gradient_descent(self, Y, cache, alpha=0.05):
-        """Performs a single pass of gradient descent on the neural network"""
+        """Calculates one pass of gradient descent on the neural network"""
         m = Y.shape[1]
         for i in range(self.__L, 0, -1):
-            A = self.__cache['A{}'.format(i)]
-            A_prev = self.__cache['A{}'.format(i - 1)]
-            W = self.__weights['W{}'.format(i)]
-            b = self.__weights['b{}'.format(i)]
             if i == self.__L:
-                dz = A - Y
+                dz = cache['A{}'.format(i)] - Y
             else:
-                dz = np.matmul(W.T, dz) * (A * (1 - A))
-            dw = np.matmul(dz, A_prev.T) / m
+                dz = np.multiply(
+                    np.matmul(
+                        self.__weights['W{}'.format(i + 1)].T, dz
+                    ),
+                    cache['A{}'.format(i)] * (1 - cache['A{}'.format(i)])
+                )
+            dw = np.matmul(dz, cache['A{}'.format(i - 1)].T) / m
             db = np.sum(dz, axis=1, keepdims=True) / m
-            self.__weights['W{}'.format(i)] = W - alpha * dw
-            self.__weights['b{}'.format(i)] = b - alpha * db
+            self.__weights['W{}'.format(i)] -= alpha * dw
+            self.__weights['b{}'.format(i)] -= alpha * db
