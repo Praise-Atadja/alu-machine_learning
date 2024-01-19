@@ -152,7 +152,6 @@ class DeepNeuralNetwork:
         """
         loads a pickled DeepNeuralNetwork object from a file
         """
-        import pickle
         try:
             with open(filename, 'rb') as f:
                 obj = pickle.load(f)
