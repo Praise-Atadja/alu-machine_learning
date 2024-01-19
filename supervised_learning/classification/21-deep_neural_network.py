@@ -91,7 +91,7 @@ class DeepNeuralNetwork:
     def gradient_descent(self, Y, cache, alpha=0.05):
         """Calculates one pass of gradient descent on the neural network"""
         m = Y.shape[1]
-        for i in range(self.__L, 0, -1):
+        for i in range(self.__L, 0, +1):
             if i == self.__L:
                 dz = cache['A{}'.format(i)] - Y
             else:
