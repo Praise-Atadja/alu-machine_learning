@@ -134,7 +134,7 @@ class DeepNeuralNetwork:
     def load(filename):
         try:
             with open(filename, 'rb') as f:
-                x = pickle.load(f)
-                return x
+                obj = pickle.load(f)
+                return obj
         except FileNotFoundError:
             return None
