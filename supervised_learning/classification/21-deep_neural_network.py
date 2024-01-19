@@ -94,6 +94,7 @@ class DeepNeuralNetwork:
         for i in range(self.__L, 0, -1):
             db = (np.sum(dz, axis=1, keepdims=True) / Y.shape[1])
             dw = (np.matmul(cache["A{}".format(i - 1)], dz.T) / Y.shape[1])
-            dz = np.matmul(self.__weights["W{}".format(i)].T, dz) * (cache["A{}".format(i - 1)] * (1 - cache["A{}".format(i - 1)]))
+            dz = np.matmul(self.__weights["W{}".format(i)].T, dz) * \
+                 (cache["A{}".format(i - 1)] * (1 - cache["A{}".format(i - 1)]))
             self.__weights["W{}".format(i)] = self.__weights["W{}".format(i)] - (alpha * dw).T
             self.__weights["b{}".format(i)] = self.__weights["b{}".format(i)] - (alpha * db)
