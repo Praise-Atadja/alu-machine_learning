@@ -138,7 +138,7 @@ class DeepNeuralNetwork:
 
     def save(self, filename):
         """ save neural network"""
-        if not isinstance(filename, str):
+        if type(filename) is not str:
             return
         if filename[-4:] != ".pkl":
             filename += '.pkl'
