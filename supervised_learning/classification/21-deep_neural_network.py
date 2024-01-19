@@ -99,8 +99,8 @@ class DeepNeuralNetwork:
                 dz = np.multiply(
                     da, np.multiply(A, 1 - A)
                 )
-            dw = np.dot(dz, A.T) / m
+            dw = np.matmul(dz, A.T) / m
             db = np.sum(dz, axis=1, keepdims=True) / m
-            da = np.dot(self.__weights['W{}'.format(i)].T, dz)
+            da = np.matmul(self.__weights['W{}'.format(i)].T, dz)
             self.__weights['W{}'.format(i)] -= alpha * dw
             self.__weights['b{}'.format(i)] -= alpha * db
