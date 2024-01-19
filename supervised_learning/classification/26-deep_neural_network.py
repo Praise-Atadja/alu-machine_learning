@@ -136,12 +136,11 @@ class DeepNeuralNetwork:
             plt.show()
         return self.evaluate(X, Y)
 
-  
     def save(self, filename):
         """ save neural network"""
         if not isinstance(filename, str):
             return
-        if not filename.endswith('.pkl'):
+        if filename[-4:] != ".pkl":
             filename += '.pkl'
         with open(filename, 'wb') as f:
             pickle.dump(self, f)
