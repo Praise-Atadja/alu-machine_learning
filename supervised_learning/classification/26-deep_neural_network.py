@@ -139,6 +139,7 @@ class DeepNeuralNetwork:
 
     def save(self, filename):
         """Saves the instance object to a file in pickle format"""
+        import pickle
         if type(filename) is not str:
             return
         if filename[-4:] != ".pkl":
@@ -149,9 +150,13 @@ class DeepNeuralNetwork:
 
     @staticmethod
     def load(filename):
+        """
+        loads a pickled DeepNeuralNetwork object from a file
+        """
+        import pickle
         try:
             with open(filename, 'rb') as f:
                 obj = pickle.load(f)
-            return obj
+                return obj
         except FileNotFoundError:
             return None
