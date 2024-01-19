@@ -5,6 +5,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+import pickle
 
 
 class DeepNeuralNetwork:
@@ -135,10 +136,23 @@ class DeepNeuralNetwork:
             plt.show()
         return self.evaluate(X, Y)
 
+  
     def save(self, filename):
-        """Saves the instance object to a file in pickle format"""
-        import pickle
+        """ save neural network"""
+        if not isinstance(filename, str):
+            return
         if not filename.endswith('.pkl'):
             filename += '.pkl'
         with open(filename, 'wb') as f:
             pickle.dump(self, f)
+
+    @staticmethod
+    def load(filename):
+        if filename is None or not isinstance(filename, str):
+            return None
+        try:
+            with open(filename, 'rb') as f:
+                obj = pickle.load(f)
+            return obj
+        except FileNotFoundError:
+            return None
