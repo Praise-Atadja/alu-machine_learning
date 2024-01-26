@@ -20,5 +20,5 @@ Returns: the tensor output of the layer
     weights_initializer = tf.contrib.layers.variance_scaling_initializer(
         mode="FAN_AVG")
     layer = tf.layers.Dense(n, activation=activation, name="layer",
-    kernel_initializer=weights_initializer)
+                        kernel_initializer=weights_initializer)
     return (layer(prev))
