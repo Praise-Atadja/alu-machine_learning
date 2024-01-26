@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Module returns two placeholders, x and y, for the neural network.
+Function returns two placeholders, x and y, for the neural network.
 """
 
 
