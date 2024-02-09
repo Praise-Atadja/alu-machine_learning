@@ -69,13 +69,13 @@ def train_mini_batch(X_train, Y_train, X_valid, Y_valid, batch_size=32,
             train_cost = sess.run(loss, feed_dict={x: X_train, y: Y_train})
             print("\tTraining Cost: {}".format(train_cost))
             train_accuracy = sess.run(accuracy,
-                            feed_dict={x: X_train, y: Y_train})
+                                    feed_dict={x: X_train, y: Y_train})
             print("\tTraining Accuracy: {}".format(train_accuracy))
             valid_cost = sess.run(loss, feed_dict={x: X_valid,
-                        y: Y_valid})
+                                                y: Y_valid})
             print("\tValidation Cost: {}".format(valid_cost))
             valid_accuracy = sess.run(accuracy, feed_dict={x: X_valid,
-                            y: Y_valid})
+                                                        y: Y_valid})
             print("\tValidation Accuracy: {}".format(valid_accuracy))
             if epoch == epochs:
                 break
