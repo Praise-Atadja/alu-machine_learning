@@ -1,33 +1,26 @@
 #!/usr/bin/env python3
-"""Script for getting user location from GitHub API"""
-
-import sys
-import requests
-import time
-
-
-def get_user_location(url):
-    """Function to retrieve user location from GitHub API"""
-
-    response = requests.get(url)
-    res = response.json()
-
-    if response.status_code == 200:
-        return res.get('location', 'Location not available')
-    elif response.status_code == 404:
-        return 'Not found'
-    elif response.status_code == 403:
-        limit = int(response.headers.get('X-Ratelimit-Reset', 0))
-        start = int(time.time())
-        elapsed = int((limit - start) / 60)
-        return f'Reset in {elapsed} min'
+""" Prints the location of a specific GitHub user. """
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print('Usage: ./2-user_location.py <API_URL>')
-        sys.exit(1)
+    from datetime import datetime
+    import requests
+    import sys
 
-    url = sys.argv[1]
-    location = get_user_location(url)
-    print(location)
+    URL = sys.argv[1]
+
+    response = requests.get(URL)
+
+    if response.status_code == 404:
+        print('Not found')
+    elif response.status_code == 403:
+        minutes_until_reset = int(
+            (
+                datetime.fromtimestamp(
+                    int(response.headers['X-RateLimit-Reset']))
+                - datetime.now()
+            ).total_seconds() / 60
+        )
+        print('Reset in {} min'.format(minutes_until_reset))
+    elif response.ok:
+        print(response.json()['location'])
