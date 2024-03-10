@@ -1,22 +1,26 @@
 #!/usr/bin/env python3
-"""Pipeline Api"""
-import requests
-import sys
-from datetime import datetime
+""" Prints the location of a specific GitHub user. """
 
 
 if __name__ == '__main__':
-    """pipeline api"""
-    url = sys.argv[1]
-    response = requests.get(url)
+    from datetime import datetime
+    import requests
+    import sys
+
+    URL = sys.argv[1]
+
+    response = requests.get(URL)
 
     if response.status_code == 404:
-        print("Not found")
+        print('Not found')
     elif response.status_code == 403:
-        string = 'X-Ratelimit-Reset'
-        date = datetime.fromtimestamp(int(response.headers[string]))
-        min = str((date - datetime.now())).split(':')[1]
-        min = int(min)
-        print("Reset in {} min".format(min))
-    else:
-        print(response.json()["location"])
+        minutes_until_reset = int(
+            (
+                datetime.fromtimestamp(
+                    int(response.headers['X-RateLimit-Reset']))
+                - datetime.now()
+            ).total_seconds() / 60
+        )
+        print('Reset in {} min'.format(minutes_until_reset))
+    elif response.ok:
+        print(response.json()['location'])
