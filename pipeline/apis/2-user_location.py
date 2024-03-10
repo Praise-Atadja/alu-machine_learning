@@ -20,3 +20,12 @@ def print_location():
             (int(response.headers['X-Ratelimit-Reset']) -
             int(response.headers['X-Ratelimit-Reset']))
         ))
+
+    else:
+        print("Not found")
+
+
+if __name__ == "__main__":
+    print_location()
+
+    print_location()
