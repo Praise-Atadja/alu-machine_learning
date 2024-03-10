@@ -5,7 +5,7 @@ import requests
 
 def sentientPlanets():
     """returns the list of names of the home planets of all sentient species"""
-    url = "https://swapi-api.hbtn.io/api/species"
+    url = "https://swapi-api.alx-tools.com/api/species/"
     r = requests.get(url)
     world_list = []
     while r.status_code == 200:
