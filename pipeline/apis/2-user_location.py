@@ -7,7 +7,7 @@ if __name__ == '__main__':
     import requests
     import sys
 
-    URL = sys.argv[1]
+    url = sys.argv[1]
 
     response = requests.get(URL)
 
