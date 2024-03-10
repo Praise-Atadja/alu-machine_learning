@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """ Prints the location of a specific GitHub user. """
 
+from datetime import datetime
+import requests
+import sys
 
 if __name__ == '__main__':
-    from datetime import datetime
-    import requests
-    import sys
+
 
     url = sys.argv[1]
 
