@@ -5,8 +5,9 @@ This module contains a function that
 uses Github API to print location of
 specific users"""
 
-import requests
 import sys
+
+import requests
 
 # get the url from string passed on the terminal
 
