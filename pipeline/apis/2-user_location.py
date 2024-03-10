@@ -1,26 +1,20 @@
 #!/usr/bin/env python3
-""" Prints the location of a specific GitHub user. """
+"""script that prints the location of a specific user"""
+import sys
+import requests as rq
+import time
 
 
 if __name__ == '__main__':
-    from datetime import datetime
-    import requests
-    import sys
-
-    URL = sys.argv[1]
-
-    response = requests.get(URL)
-
-    if response.status_code == 404:
-        print('Not found')
-    elif response.status_code == 403:
-        minutes_until_reset = int(
-            (
-                datetime.fromtimestamp(
-                    int(response.headers['X-RateLimit-Reset']))
-                - datetime.now()
-            ).total_seconds() / 60
-        )
-        print('Reset in {} min'.format(minutes_until_reset))
-    elif response.ok:
-        print(response.json()['location'])
+    url = sys.argv[1]
+    payload = {'Accept': "application/vnd.github.v3+json"}
+    r = rq.get(url, params=payload)
+    if r.status_code == 403:
+        limit = r.headers["X-Ratelimit-Reset"]
+        x = (int(limit) - int(time.time())) / 60
+        print("Reset in {} min".format(int(x)))
+    if r.status_code == 200:
+        location = r.json()["location"]
+        print(location)
+    if r.status_code == 404:
+        print("Not found")
