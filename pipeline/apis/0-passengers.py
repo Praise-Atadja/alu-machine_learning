@@ -5,7 +5,7 @@ import requests
 
 def availableShips(passengerCount):
     """show all starhips avaliable from the API"""
-    url = "https://swapi-api.hbtn.io/api/starships"
+    url = "https://swapi-api.alx-tools.com/api/starships/"
     r = requests.get(url)
     ship_list = []
     while r.status_code == 200:
