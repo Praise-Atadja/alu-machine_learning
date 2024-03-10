@@ -9,7 +9,7 @@ if __name__ == '__main__':
 
     url = sys.argv[1]
 
-    response = requests.get(URL)
+    response = requests.get(url)
 
     if response.status_code == 404:
         print('Not found')
