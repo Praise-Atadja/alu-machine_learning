@@ -1,2 +1,2 @@
---lists rows in table
+--Show rows in table
 SELECT * FROM first_table;
