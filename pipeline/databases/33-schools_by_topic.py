@@ -1,15 +1,24 @@
 #!/usr/bin/env python3
-"""update values with pymongo"""
+"""
+Defines function that returns the list of schools with a specific topic
+"""
 
 
-def update_topics(mongo_collection, name, topics):
+def schools_by_topic(mongo_collection, topic):
     """
-    update values in a collection
-    Args:
-        mongo_collection: pymongo collection object.
-        name: type str name to be updated.
-        topics: type list of topics approached in the school.
+    Finds list of all schools with a specific topic
+
+    parameters:
+        mongo_collection [pymongo]:
+            the MongoDB collection to use
+        topic [string]:
+            the topic to search for
+
+    returns:
+        list of schools with the given topic
     """
-    query = {"name": name}
-    topic = {"$set": {"topics": topics}}
-    mongo_collection.update_many(query, topic)
+    schools = []
+    documents = mongo_collection.find({'topics': {'$all': [topic]}})
+    for doc in documents:
+        schools.append(doc)
+    return schools
