@@ -1,29 +1,36 @@
 #!/usr/bin/env python3
-"""Log stats"""
+""" Module used to
+"""
 from pymongo import MongoClient
 
-template = """\
-{} logs
-Methods:
-\tmethod GET: {}
-\tmethod POST: {}
-\tmethod PUT: {}
-\tmethod PATCH: {}
-\tmethod DELETE: {}
-{} status check"""
 
 if __name__ == "__main__":
-    client = MongoClient('mongodb://127.0.0.1:27017')
-    db = client['logs']
-    collection = db['nginx']
+    """
+    [summary]
+    """
 
-    logs = collection.count_documents({})
-    GET = collection.count_documents({"method": "GET"})
-    POST = collection.count_documents({"method": "POST"})
-    PUT = collection.count_documents({"method": "PUT"})
-    PATCH = collection.count_documents({"method": "PATCH"})
-    DELETE = collection.count_documents({"method": "DELETE"})
-    status = collection.count_documents({"method": "GET",
-    "path": "/status"})
+    method_list = ["GET", "POST", "PUT", "PATCH", "DELETE"]
+    db_address = 'mongodb://127.0.0.1:27017'
 
-    print(template.format(logs, GET, POST, PUT, PATCH, DELETE, status))
+    client = MongoClient(db_address)
+
+    # create dict of all dbs and its collections
+    d = dict((db, [collection for collection in client[db].collection_names()])
+            for db in client.database_names())
+
+    # validate logs and nginx exists
+    # if ('logs' not in d.keys()):
+    #    exit()
+
+    collection = client.logs.nginx  # client.database.collection
+    docs = collection.count_documents({})
+    print("{} logs".format(docs))
+
+    print("Methods:")
+    for method in method_list:
+        count = collection.count_documents({"method": method})
+        print("\tmethod {}: {}".format(method, count))
+
+    d = {"method": "GET", "path": "/status"}
+    GET_status = collection.count_documents(d)
+    print("{} status check".format(GET_status))
