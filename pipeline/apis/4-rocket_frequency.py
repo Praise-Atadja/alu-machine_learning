@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-""" Script that displays the number of launches per rocket"""
+""" Get request from SpaceX"""
 import requests
 
 
 if __name__ == '__main__':
+
     object = dict()
     url = 'https://api.spacexdata.com/v4/launches'
     launches = requests.get(url).json()
