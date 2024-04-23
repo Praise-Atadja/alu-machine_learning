@@ -20,6 +20,8 @@ if __name__ == "__main__":
     for method in methods:
         method_count = logs_coll.count_documents({"method": method})
         print("\tmethod {}: {}".format(method, method_count))
+        print(f'\t method {method}: {collection.count_documents({"method": method})}')
+        
     filter_path = {"method": "GET", "path": "/status"}
     path_count = logs_coll.count_documents(filter_path)
     print("{} status check".format(path_count))
