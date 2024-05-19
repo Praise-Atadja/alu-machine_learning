@@ -1,141 +1,95 @@
 #!/usr/bin/env python3
-"""
-NST - Initialize
-"""
+
+"""useless comments"""
+
 import numpy as np
 import tensorflow as tf
 
 
+def check_image_channel_input(img, source):
+    """
+    Check the channel of given image
+    :param img: The image
+    :param source: The variable name to error message
+    :return:
+    """
+    if type(img) != np.ndarray or img.shape[-1] != 3:
+        raise TypeError(
+            "{} must be a numpy.ndarray with shape (h, w, 3)".format(source)
+        )
+
+
+def check_hyperparameter_input(hyperparameter, source):
+    """
+    Check given hyperparameter
+    :param hyperparameter: The hyperparameter
+    :param source: The variable name to error message
+    :return:
+    """
+    if type(hyperparameter) not in [float, int] or hyperparameter < 0:
+        raise TypeError("{} must be a non-negative number".format(source))
+
+
 class NST:
-    """class used to perform tasks for neural style transfer"""
+    """Neural style transfer model"""
 
     style_layers = ['block1_conv1', 'block2_conv1', 'block3_conv1',
                     'block4_conv1', 'block5_conv1']
     content_layer = 'block5_conv2'
 
     def __init__(self, style_image, content_image, alpha=1e4, beta=1):
-        """define and initialize variables"""
-
-        # After eager execution is enabled, operations are executed as they are
-        # defined and Tensor objects hold concrete values, which can be
-        # accessed as numpy.ndarray`s through the numpy() method.
+        """
+        Init function class
+        :param style_image: The style_image (?, ?, 3)
+        :param content_image: The content image (?, ?, 3)
+        :param alpha: The alpha parameter
+        :param beta: The beta parameter
+        """
         tf.enable_eager_execution()
-
-        err_1 = "style_image must be a numpy.ndarray with shape (h, w, 3)"
-        if not isinstance(style_image, np.ndarray):
-            raise TypeError(err_1)
-        if style_image.ndim != 3 or style_image.shape[-1] != 3:
-            raise TypeError(err_1)
-        err_2 = "content_image must be a numpy.ndarray with shape (h, w, 3)"
-        if not isinstance(content_image, np.ndarray):
-            raise TypeError(err_2)
-        if content_image.ndim != 3 or content_image.shape[-1] != 3:
-            raise TypeError(err_2)
-        if not isinstance(alpha, (int, float)) or alpha < 0:
-            raise TypeError("alpha must be a non-negative number")
-        if not isinstance(beta, (int, float)) or beta < 0:
-            raise TypeError("beta must be a non-negative number")
-
-        # Preprocessed style image
+        check_image_channel_input(style_image, "style_image")
+        check_image_channel_input(content_image, "content_image")
         self.style_image = self.scale_image(style_image)
-        # Preprocessed content image
         self.content_image = self.scale_image(content_image)
-        # Weight for content cost
+        check_hyperparameter_input(alpha, "alpha")
+        check_hyperparameter_input(beta, "beta")
         self.alpha = alpha
-        # Weight for style cost
         self.beta = beta
-
-        # Load the VGG19 model for the cost calculation
         self.load_model()
 
     @staticmethod
     def scale_image(image):
         """
-        function that rescales an image such that its pixels values are
-        between 0 and 1 and its largest side is 512 pixels
+        Scale the image to (1, 512 or less, 512 or less, 3)
+        :param image: The given image to resize
+        :return: The resized image
         """
+        check_image_channel_input(image, "image")
 
-        err = "image must be a numpy.ndarray with shape (h, w, 3)"
-        if not isinstance(image, np.ndarray):
-            raise TypeError(err)
-        if image.ndim != 3 or image.shape[-1] != 3:
-            raise TypeError(err)
+        max_dim = max(image.shape[:-1])
+        ratio_dims = 512 / max_dim
 
-        # print("image:", type(image[0][0][0])) <-np.int, [0..255]
+        new_dims = tuple([int(dim * ratio_dims) for dim in image.shape[:-1]])
+        image = tf.expand_dims(image, 0)  # [1, h, w, 3]
+        resized_image = tf.image.resize_bicubic(image, new_dims) / 255
 
-        # Impose image rescaling such that largest side is 512 pixels
-        max_dim = 512
-        # print("max_dim:", type(max_dim)) <-int
-        long_dim = max(image.shape[:-1])
-        # print("long_dim:", type(long_dim)) <-int
-        scale = max_dim / long_dim
-        # print("scale:", scale, type(scale)) <-float
-
-        # Infer new_shape using the scale factor
-        # print("image.shape[:-1]:", image.shape[:-1],
-        #      type(image.shape[:-1][0])) <-int
-        # new_shape = scale * image.shape[:-1] <- TypeError:
-        # can't multiply sequence by non-int of type 'float'.
-        # use map() to convert scale * tuple element products (floats)
-        # to integers and recompose the tuple:
-        new_shape = tuple(map(lambda x: int(scale * x), image.shape[:-1]))
-        # print("new_shape:", new_shape, type(new_shape[0]))
-
-        # Convert np.ndarray with shape (h, w, 3) to shape (1, h, w, 3)
-        image = image[tf.newaxis, :]
-        # print(image)
-        # print(image.shape)
-
-        # Resize image using bicubic interpolation, concurrently
-        # converting np.ndarray to tf.tensor with shape (1, h_new, w_new, 3)
-        # In Google Colab (tf 2.0):
-        # image = tf.image.resize(image, (new_h, new_w), method='bicubic')
-        # With tf 1.2:
-        image = tf.image.resize_bicubic(image, new_shape)
-        # print("Before clipping:", image)
-        # print(image.shape)
-
-        # Normalize image pixels to range [0..1]:
-        image = image / 255
-        # print("image:", type(image[0][0][0])) <-np.float, [0..1]
-
-        # Since this is a float image, keep the pixel values between 0 and 1:
-        # clip data to the valid range for plt.imshow with RGB data
-        # ([0..1] for floats) <- required/requested by the script
-        image = tf.clip_by_value(image, clip_value_min=0, clip_value_max=1)
-        # print("After clipping:", image)
-
-        return image
+        return tf.clip_by_value(resized_image, 0.0, 1.0)
 
     def load_model(self):
-        """function that instantiates a VGG19 model from Keras"""
-
-        # Instantiate a base model, without the top classifier
-        # default input size for this model is 224 x 224
-        base_vgg = tf.keras.applications.VGG19(include_top=False,
-                                               weights='imagenet',
-                                               input_tensor=None,
-                                               input_shape=None,
-                                               pooling=None,
-                                               classes=1000)
-        # "Replace" the MaxPooling layers of the model by AvgPooling layers by
-        # passing them to the loading mechanism via the custom_objects argument
-        custom_object = {'MaxPooling2D': tf.keras.layers.AveragePooling2D}
-        base_vgg.save('base_vgg')
-        vgg = tf.keras.models.load_model('base_vgg',
-                                         custom_objects=custom_object)
-        # This way of freezing the network does not work:
-        # vgg.trainable = False
-        # Freeze the model layer by layer instead
-        for layer in vgg.layers:
+        """
+        Load VGG19 model
+        :return: The model
+        """
+        vgg19 = tf.keras.applications.VGG19(include_top=False)
+        for layer in vgg19.layers:
             layer.trainable = False
+        vgg19.save("vgg_base_model.h5")
+        model = tf.keras.models.load_model(
+            "vgg_base_model.h5",
+            custom_objects={
+                "MaxPooling2D": tf.keras.layers.AveragePooling2D()
+            })
 
-        # Extract the output feature templates of the desired layers
-        style_outputs = [vgg.get_layer(name).output
-                         for name in self.style_layers]
-        content_output = vgg.get_layer(self.content_layer).output
-        # Combine the output feature templates by layer concatenation
-        outputs = style_outputs + [content_output]
-        # Instantiate the custom/recomposed model using the outputs list
-        # and save the model in a "model" instance
-        self.model = tf.keras.models.Model(inputs=vgg.input, outputs=outputs)
+        outputs = ([model.get_layer(layer).output
+                   for layer in self.style_layers]
+                   + [model.get_layer(self.content_layer).output])
+        self.model = tf.keras.models.Model(model.input, outputs)
