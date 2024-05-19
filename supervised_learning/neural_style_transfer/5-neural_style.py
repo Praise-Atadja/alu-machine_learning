@@ -16,11 +16,6 @@ class NST:
     def __init__(self, style_image, content_image, alpha=1e4, beta=1):
         """define and initialize variables"""
 
-        # After eager execution is enabled, operations are executed as they are
-        # defined and Tensor objects hold concrete values, which can be
-        # accessed as numpy.ndarray`s through the numpy() method.
-        tf.enable_eager_execution()
-
         err_1 = "style_image must be a numpy.ndarray with shape (h, w, 3)"
         if not isinstance(style_image, np.ndarray):
             raise TypeError(err_1)
@@ -64,49 +59,22 @@ class NST:
         if image.ndim != 3 or image.shape[-1] != 3:
             raise TypeError(err)
 
-        # print("image:", type(image[0][0][0])) <-np.int, [0..255]
-
-        # Impose image rescaling such that largest side is 512 pixels
         max_dim = 512
-        # print("max_dim:", type(max_dim)) <-int
         long_dim = max(image.shape[:-1])
-        # print("long_dim:", type(long_dim)) <-int
         scale = max_dim / long_dim
-        # print("scale:", scale, type(scale)) <-float
-
-        # Infer new_shape using the scale factor
-        # print("image.shape[:-1]:", image.shape[:-1],
-        #      type(image.shape[:-1][0])) <-int
-        # new_shape = scale * image.shape[:-1] <- TypeError:
-        # can't multiply sequence by non-int of type 'float'.
-        # use map() to convert scale * tuple element products (floats)
-        # to integers and recompose the tuple:
         new_shape = tuple(map(lambda x: int(scale * x), image.shape[:-1]))
-        # print("new_shape:", new_shape, type(new_shape[0]))
 
         # Convert np.ndarray with shape (h, w, 3) to shape (1, h, w, 3)
         image = image[tf.newaxis, :]
-        # print(image)
-        # print(image.shape)
 
-        # Resize image using bicubic interpolation, concurrently
-        # converting np.ndarray to tf.tensor with shape (1, h_new, w_new, 3)
-        # In Google Colab (tf 2.0):
-        # image = tf.image.resize(image, (new_h, new_w), method='bicubic')
-        # With tf 1.2:
-        image = tf.image.resize_bicubic(image, new_shape)
-        # print("Before clipping:", image)
-        # print(image.shape)
+        # Resize image using bicubic interpolation
+        image = tf.image.resize(image, new_shape, method='bicubic')
 
-        # Normalize image pixels to range [0..1]:
-        image = image / 255
-        # print("image:", type(image[0][0][0])) <-np.float, [0..1]
+        # Normalize image pixels to range [0..1]
+        image = image / 255.0
 
-        # Since this is a float image, keep the pixel values between 0 and 1:
-        # clip data to the valid range for plt.imshow with RGB data
-        # ([0..1] for floats) <- required/requested by the script
+        # Clip data to the valid range [0..1]
         image = tf.clip_by_value(image, clip_value_min=0, clip_value_max=1)
-        # print("After clipping:", image)
 
         return image
 
@@ -114,22 +82,15 @@ class NST:
         """function that instantiates a VGG19 model from Keras"""
 
         # Instantiate a base model, without the top classifier
-        # default input size for this model is 224 x 224
         base_vgg = tf.keras.applications.VGG19(include_top=False,
-                                               weights='imagenet',
-                                               input_tensor=None,
-                                               input_shape=None,
-                                               pooling=None,
-                                               classes=1000)
-        # "Replace" the MaxPooling layers of the model by AvgPooling layers by
-        # passing them to the loading mechanism via the custom_objects argument
-        custom_object = {'MaxPooling2D': tf.keras.layers.AveragePooling2D}
-        base_vgg.save('base_vgg')
-        vgg = tf.keras.models.load_model('base_vgg',
-                                         custom_objects=custom_object)
-        # This way of freezing the network does not work:
-        # vgg.trainable = False
-        # Freeze the model layer by layer instead
+                                               weights='imagenet')
+
+        # Replace MaxPooling layers with AveragePooling layers
+        custom_objects = {'MaxPooling2D': tf.keras.layers.AveragePooling2D}
+        vgg = tf.keras.models.clone_model(
+            base_vgg, custom_objects=custom_objects)
+
+        # Freeze the model layer by layer
         for layer in vgg.layers:
             layer.trainable = False
 
@@ -140,34 +101,22 @@ class NST:
         # Combine the output feature templates by layer concatenation
         outputs = style_outputs + [content_output]
         # Instantiate the custom/recomposed model using the outputs list
-        # and save the model in a "model" instance
         self.model = tf.keras.models.Model(inputs=vgg.input, outputs=outputs)
 
     @staticmethod
     def gram_matrix(input_layer):
         """function that calculates a Gram matrix, taking a layer as input"""
-        """
-        the style of an image can be described by the means and correlations
-        across the different feature maps. A Gram matrix that includes this
-        across the different feature maps. A Gram matrix that includes this
-        feature vector with itself at each location, and averaging that outer
-        product over all locations.
-        """
 
         err = "input_layer must be a tensor of rank 4"
         if not isinstance(input_layer, (tf.Tensor, tf.Variable)):
             raise TypeError(err)
-        # if input_layer.ndim != 4:
-        # note: tf.Variable does not have a "ndim" attribute! (error raised)
         if len(input_layer.shape) != 4:
             raise TypeError(err)
 
         # Compute the outer product of the input tensor (feature map)
-        # input_layer with itself
         result = tf.linalg.einsum('bijc,bijd->bcd', input_layer, input_layer)
 
-        # Average over all the elements ("pixels" or "grid cell") of
-        # the feature map
+        # Average over all the elements of the feature map
         input_shape = tf.shape(input_layer)
         num_locations = tf.cast(input_shape[1] * input_shape[2], tf.float32)
         result = result / num_locations
@@ -178,29 +127,24 @@ class NST:
         """function that extracts the style and content features
         used to calculate the neural style cost"""
 
-        # Preprocess the content and style input images (rescale
-        # pixels to 255 prior to preprocessing as per vgg19 model reqs)
+        # Preprocess the content and style input images
         style_image = tf.keras.applications.vgg19.preprocess_input(
             self.style_image * 255)
         content_image = tf.keras.applications.vgg19.preprocess_input(
             self.content_image * 255)
-        # Extract the actual output features from the model passing it
-        # the style_image and the content_image
+
+        # Extract the actual output features from the model
         outputs_style = self.model(style_image)
-        # note: style_outputs is a list of tensors
         style_outputs = outputs_style[:-1]
-        # print("style_outputs:", np.array(outputs_style[:-1]).shape,
-        #       np.array(outputs_style[:-1]))
         outputs_content = self.model(content_image)
-        # note: content_output is a tensor
-        content_ouput = outputs_content[-1]
-        # print("content_output:", np.array(outputs_content[-1]).shape)
+        content_output = outputs_content[-1]
+
         # Create the list of gram matrices calculated from the style layer
         # outputs of the style image
         self.gram_style_features = [self.gram_matrix(style_output)
                                     for style_output in style_outputs]
         # Content layer output of the content_image
-        self.content_feature = content_ouput
+        self.content_feature = content_output
 
     def layer_style_cost(self, style_output, gram_target):
         """function that calculates the style cost for a single
@@ -237,10 +181,6 @@ class NST:
             raise TypeError(err)
         if len(self.style_layers) != len(style_outputs):
             raise TypeError(err)
-
-        # Reminders:
-        # style_layers is a list of name strings
-        # style_outputs is a list of tensors
 
         style_costs = []
         # each layer should be weighted evenly with all weights summing to 1
