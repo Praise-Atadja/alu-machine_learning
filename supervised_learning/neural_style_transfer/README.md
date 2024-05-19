@@ -166,4 +166,4 @@ final_image = run_style_transfer('path_to_content_image.jpg', 'path_to_style_ima
 
 Neural Style Transfer is a fascinating application of deep learning that blends the worlds of technology and art. This project demonstrates the use of `tf.keras` and eager execution to create stunning artworks by combining the content of one image with the style of another. Explore different content and style images to create your own unique pieces of art!
 
-Feel free to contribute to this project or modify it to suit your creative needs. Happy coding and creating!
+
