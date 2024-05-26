@@ -27,11 +27,6 @@ RNNs Tutorial, Part 3
 Advanced topics in RNNs, including optimization techniques and performance improvements.
 RNNs Tutorial, Part 4
 
-Detailed implementations of RNNs, LSTMs, and GRUs.
-Note: There is a slight mistake in the last equation for the GRU cell. The correct equation should be: s_t = (1 - z) * s_t-1 + z * h.
-Additional Implementations
-Bidirectional RNN In-depth Intuition
-
 Code examples demonstrating the implementation of Bidirectional RNNs, showing how they can improve performance by considering context from both past and future data points.
 Deep RNN
 
