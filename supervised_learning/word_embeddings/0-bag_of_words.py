@@ -4,6 +4,7 @@
 """
 from sklearn.feature_extraction.text import CountVectorizer
 
+
 def bag_of_words(sentences, vocab=None):
     """function creates a bag of words embedding matrix"""
 
