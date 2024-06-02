@@ -5,7 +5,6 @@ that calculates the cumulative n-gram BLEU score for a sentence
 import numpy as np
 
 
-
 def ngram_bleu(references, sentence, n):
     """
     function that calculates the n_gram BLEU score
