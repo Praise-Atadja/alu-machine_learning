@@ -64,5 +64,4 @@ class MultiHeadAttention(tf.keras.layers.Layer):
         # Pass the concatenated_attention (output) to the 'linear' Dense layer
         output = self.linear(concatenated_attention)
 
-
         return output, attention_weights
