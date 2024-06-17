@@ -29,7 +29,7 @@ def sdp_attention(Q, K, V, mask=None):
     # Softmax over the last axis (seq_len_k) so that the scores add up to 1
     attention_weights = tf.nn.softmax(scaled_attention_logits, axis=-1)
     # attention_weights: shape (..., seq_len_q, seq_len_k)
-   
+
     # Note: seq_len_k == seq_len_v
     output = tf.matmul(attention_weights, V)  # (..., seq_len_q, depth_v)
 
