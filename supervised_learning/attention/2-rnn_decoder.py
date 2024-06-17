@@ -48,12 +48,9 @@ class RNNDecoder(tf.keras.layers.Layer):
         # Pass the decoder inputs on to the GRU layer
         # initial = hidden_states[:, -1]
         decoder_outputs, last_hidden_state = self.gru(inputs)
-        
 
         # Reshape decoder_outputs to (batch, units)
         y = tf.reshape(decoder_outputs, (-1, decoder_outputs.shape[2]))
-      
         y = self.F(y)
-      
 
         return y, last_hidden_state
