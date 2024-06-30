@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-"""useless comment"""
+"""initializes variables for a Gaussian Mixture Model"""
 
 
 import numpy as np
