@@ -6,9 +6,11 @@ import sklearn.cluster
 
 
 def kmeans(X, k):
-    """Perform K-means on dataset"""
-    kmeans = sklearn.cluster.KMeans(n_clusters=k).fit(X)
-    C = kmeans.cluster_centers_
-    clss = kmeans.labels_
-
-    return C, clss
+    """
+    Use skleanr Kmean
+    :param X: The dataset
+    :param k: The number of cluster
+    :return: The center of cluster and the labels
+    """
+    kmeans = sklearn.cluster.KMeans(k).fit(X)
+    return kmeans.cluster_centers_, kmeans.labels_
