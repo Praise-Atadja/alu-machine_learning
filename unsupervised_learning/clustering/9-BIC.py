@@ -26,15 +26,15 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
     if type(verbose) is not bool:
         return None, None, None, None
     b = np.zeros(kmax + 1 - kmin)
-    l = np.zeros(kmax + 1 - kmin)
+    # l = np.zeros(kmax + 1 - kmin)
     results = []
     for k in range(kmin, kmax + 1):
-        pi, m, S, _, l[k - kmin] = expectation_maximization(
+        pi, m, S, _, b[k - kmin] = expectation_maximization(
             X, k, iterations=iterations, tol=tol, verbose=verbose)
         results.append((pi, m, S))
         p = k * (d + 2) * (d + 1) / 2 - 1
-        b[k - kmin] = p * np.log(n) - 2 * l[k - kmin]
+        b[k - kmin] = p * np.log(n) - 2 * b[k - kmin]
     amin = np.argmin(b)
     best_k = amin + kmin
     best_result = results[amin]
-    return best_k, best_result, l, b
+    return best_k, best_result, b
