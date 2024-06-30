@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""Optimize k module"""
+
+
+"""useless comment"""
 
 
 import numpy as np
@@ -8,31 +10,36 @@ variance = __import__('2-variance').variance
 
 
 def optimum_k(X, kmin=1, kmax=None, iterations=1000):
-    """Test for optimum number of clusters"""
+    """
+    Compute the Kmean for different values of k on a given dataset
+    Output the variance and the values for K.
+    :param X: The dataset
+    :param kmin: The value min for K
+    :param kmax: The value max for K
+    :param iterations: The number of iterations for the Kmean algos
+    :return: The variance and the values for K
+    """
     if not isinstance(X, np.ndarray) or len(X.shape) != 2:
         return None, None
-    if not isinstance(kmin, int) or kmin < 1\
-            or not isinstance(kmax, int) or kmax < 1\
-            or not isinstance(iterations, int) or iterations < 1\
-            or kmin >= kmax:
+    n, _ = X.shape
+    kmax = kmax if kmax is not None else n
+    if not isinstance(kmin, int) or not isinstance(kmax, int):
         return None, None
-    if not isinstance(iterations, int) or iterations <= 0:
+    if kmin <= 0 or kmax <= 0 or kmax <= kmin:
+        return None, None
+    if not isinstance(iterations, np.int) or iterations <= 0:
         return None, None
 
-    n, d = X.shape
-    if kmax is None:
-        kmax = n
+    kmean_results = []
+    var_results = []
+    base_var = 0
+    for k in range(kmin, kmax + 1):
+        C, clss = kmeans(X, k, iterations)
+        kmean_results.append((C, clss))
 
-    results = []
-    d_vars = []
+        var = variance(X, C)
+        if not len(var_results):
+            base_var = var
+        var_results.append(base_var - var)
 
-    for i in range(kmin, kmax + 1):
-        M, clss = kmeans(X, i, iterations=iterations)
-        var = variance(X, M)
-
-        if i == kmin:
-            first = var
-        results.append((M, clss))
-        d_vars.append(first - var)
-
-    return results, d_vars
+    return kmean_results, var_results
