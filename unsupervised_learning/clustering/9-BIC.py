@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""inds the best number of clusters for a GMM using the Bayesian Information Criterion"""
+"""GMM using the Bayesian Information Criterion"""
 
 
 import numpy as np
@@ -19,7 +19,7 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
         return None, None, None, None
     if kmax <= kmin:
         return None, None, None, None
-    if type(iterations) is not int or iterations != int(iterations) or iterations < 1:
+    if not isinstance(iterations, int) or iterations < 1:
         return None, None, None, None
     if type(tol) is not float or tol < 0:
         return None, None, None, None
