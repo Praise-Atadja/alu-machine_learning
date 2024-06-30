@@ -46,7 +46,7 @@ def BIC(X, kmin=1, kmax=None, iterations=1000, tol=1e-5, verbose=False):
 
     for k in range(kmin, kmax + 1):
         best_k.append(k)
-        pi, m, S, _, total_log_like = expectation_maximization(X,k,iterations,tol,verbose)
+        pi, m, S, _, total_log_like = expectation_maximization(X, k, iterations, tol, verbose)
         best_result.append((pi, m, S))
         log_like.append(total_log_like)
         p = (k * d * (d + 1) / 2) + (d * k) + k - 1
