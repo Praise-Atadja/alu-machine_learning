@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
-"""GMM task module"""
+"""calculates a GMM from a dataset"""
 
 
 import sklearn.mixture
 
 
 def gmm(X, k):
-    """Calculate GMM from a dataset"""
-    GM = sklearn.mixture.GaussianMixture(n_components=k)
-    par = GM.fit(X)
-    pi = par.weights_
-    m = par.means_
-    S = par.covariances_
-    clss = GM.predict(X)
-    bic = GM.bic(X)
+    """
+    Use the GMN of scikit learn
+    :param X: The data set
+    :param k: The number of cluster
+    :return: The prior, means, covariance, clss, bic
+    """
+    gmm = sklearn.mixture.GaussianMixture(k).fit(X)
 
-    return pi, m, S, clss, bic
+    return (gmm.weights_, gmm.means_, gmm.covariances_,
+            gmm.predict(X), gmm.bic(X))
