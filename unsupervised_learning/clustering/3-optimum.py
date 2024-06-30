@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 
-"""useless comment"""
+"""tests for the optimum number of clusters by variance"""
 
 
 import numpy as np
