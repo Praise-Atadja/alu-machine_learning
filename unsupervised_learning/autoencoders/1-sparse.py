@@ -1,41 +1,29 @@
 #!/usr/bin/env python3
-"""Sparse Autoencoder"""
-
-
+"""Auto Encoder"""
 import tensorflow.keras as keras
 
 
 def autoencoder(input_dims, hidden_layers, latent_dims, lambtha):
-    """Create a sparse autoencoder"""
-    input_encoder = keras.Input(shape=(input_dims, ))
-    input_decoder = keras.Input(shape=(latent_dims, ))
-    sparse = keras.regularizers.l1(lambtha)
-    setup = keras.layers.Dense(
-        hidden_layers[0],
-        activity_regularizer=sparse,
-        activation='relu')(input_encoder)
+    """create sparse autencoder"""
+    # autoencoder(784, [128, 64], 32)
+    regularizer = keras.regularizers.l1(lambtha)
 
-    for lay in range(1, len(hidden_layers)):
-        setup = keras.layers.Dense(
-            hidden_layers[lay],
-            activity_regularizer=sparse,
-            activation='relu')(setup)
+    input = keras.Input(shape=(input_dims,))
+    encoded1 = keras.layers.Dense(hidden_layers[0], activation='relu')(input)
+    for lay in hidden_layers[1:]:
+        encoded2 = keras.layers.Dense(lay, activation='relu')(encoded1)
+    encoded3 = keras.layers.Dense(latent_dims, activation='relu',
+                                  activity_regularizer=regularizer)(encoded2)
+    encoder = keras.Model(input, encoded3)
 
-    latent = keras.layers.Dense(latent_dims, activation='relu')(setup)
-    encoder = keras.Model(inputs=input_encoder, outputs=latent)
+    input2 = keras.Input(shape=(latent_dims,))
+    decoded1 = keras.layers.Dense(hidden_layers[-1], activation='relu')(input2)
+    for dim in hidden_layers[-2::-1]:
+        decoded2 = keras.layers.Dense(dim, activation='relu')(decoded1)
+    decoded3 = keras.layers.Dense(input_dims, activation='sigmoid')(decoded2)
+    decoder = keras.Model(input2, decoded3)
 
-    de = keras.layers.Dense(hidden_layers[-1],
-                            activation='relu')(input_decoder)
-
-    for d in range(len(hidden_layers) - 2, -1, -1):
-        de = keras.layers.Dense(hidden_layers[d], activation='relu')(de)
-
-    final = keras.layers.Dense(input_dims, activation='sigmoid')(de)
-    decoder = keras.Model(inputs=input_decoder, outputs=final)
-    encoder_output = encoder(input_encoder)
-    decoder_output = decoder(encoder_output)
-    auto = keras.Model(inputs=input_encoder, outputs=decoder_output)
-
-    auto.compile(optimizer='adam', loss='binary_crossentropy')
+    auto = keras.Model(input, decoder(encoder(input)))
+    auto.compile(loss='binary_crossentropy', optimizer='adam')
 
     return encoder, decoder, auto
