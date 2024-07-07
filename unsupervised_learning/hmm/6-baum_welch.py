@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Baum-Welch algorithm for hidden markov model"""
+"""hidden markov chain"""
 import numpy as np
 
 
@@ -59,8 +59,8 @@ def baum_welch(Observations, Transition, Emission, Initial, iterations=1000):
                                      be[:, col + 1])
                 for row in range(N):
                     numerator = al[row, col] * a[row, :] * \
-                        b[:, Observations[col + 1]].T * \
-                        be[:, col + 1].T
+                                b[:, Observations[col + 1]].T * \
+                                be[:, col + 1].T
                     xi[row, :, col] = numerator / denominator
             g = np.sum(xi, axis=1)
             a = np.sum(xi, 2) / np.sum(g, axis=1).reshape((-1, 1))
